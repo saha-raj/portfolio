@@ -16,71 +16,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextButton = document.querySelector('.carousel-nav.next');
     
     // Settings
-    const itemWidth = items[0].getBoundingClientRect().width;
-    const moveAmount = itemWidth;
     let currentIndex = 0;
-    
-    // Calculate total items visible based on viewport width
-    let itemsVisible = getVisibleItems();
-    window.addEventListener('resize', () => {
-        itemsVisible = getVisibleItems();
-        updateCarousel();
-    });
     
     // Set initial positions and active states
     function initCarousel() {
-        // Add necessary width to the track
-        track.style.width = `${items.length * itemWidth}px`;
-        
-        // Set initial active class
-        updateActiveItems();
+        // Set initial active item
+        items.forEach(item => item.classList.remove('active'));
+        items[0].classList.add('active');
         
         // Update button states
         updateButtons();
         
-        // Center the active item
-        updateCarousel();
+        // Center the first item
+        centerItem(0);
     }
     
-    function getVisibleItems() {
-        const viewportWidth = window.innerWidth;
-        if (viewportWidth >= 992) return 3;
-        if (viewportWidth >= 768) return 2;
-        return 1;
+    function centerItem(index) {
+        const item = items[index];
+        const carouselSection = document.querySelector('.carousel-section');
+        const carouselWidth = carouselSection.offsetWidth;
+        const itemRect = item.getBoundingClientRect();
+        const itemWidth = itemRect.width;
+        
+        // Calculate the offset needed to center this item
+        const itemOffsetLeft = item.offsetLeft;
+        const centerOffset = (carouselWidth - itemWidth) / 2;
+        const translateX = centerOffset - itemOffsetLeft;
+        
+        // Apply the transform
+        track.style.transform = `translateX(${translateX}px)`;
+        console.log(`Centering item ${index}: translateX(${translateX}px)`);
     }
     
     function updateCarousel() {
-        console.log(`Current Index: ${currentIndex}`);
+        // Update active classes
         items.forEach((item, index) => {
             item.classList.toggle('active', index === currentIndex);
         });
-        const activeItem = items[currentIndex];
-        const offset = -activeItem.offsetLeft + (track.offsetWidth - activeItem.offsetWidth) / 2;
-        track.style.transform = `translateX(${offset}px)`;
+        
+        // Center the current item
+        centerItem(currentIndex);
+        
+        // Update button states
         updateButtons();
-    }
-    
-    function updateActiveItems() {
-        // Remove all active classes
-        items.forEach(item => item.classList.remove('active'));
-        
-        // Calculate center index
-        const centerIndex = currentIndex + Math.floor(itemsVisible / 2);
-        
-        // Add active class to center item(s)
-        if (itemsVisible === 1) {
-            // Only one item visible, so active item is the current one
-            if (items[currentIndex]) items[currentIndex].classList.add('active');
-        } else if (itemsVisible % 2 === 0) {
-            // Even number of visible items, so two center items
-            const firstCenter = centerIndex - 1;
-            const secondCenter = centerIndex;
-            if (items[firstCenter]) items[firstCenter].classList.add('active');
-            if (items[secondCenter]) items[secondCenter].classList.add('active');
-        } else {
-            // Odd number of visible items, so one center item
-            if (items[centerIndex]) items[centerIndex].classList.add('active');
-        }
     }
     
     function updateButtons() {
@@ -90,24 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
         nextButton.style.opacity = nextButton.disabled ? '0.5' : '1';
     }
     
-    function moveNext() {
-        if (currentIndex < items.length - itemsVisible) {
-            currentIndex++;
-            updateCarousel();
-        }
-    }
-    
-    function movePrev() {
-        console.log('Previous button function called');
-        if (currentIndex > 0) {
-            currentIndex--;
-            updateCarousel();
-        }
-    }
-    
     // Event listeners
     nextButton.addEventListener('click', function() {
-        console.log('Next button clicked');
         if (currentIndex < items.length - 1) {
             currentIndex++;
             updateCarousel();
@@ -115,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     prevButton.addEventListener('click', function() {
-        console.log('Previous button clicked');
         if (currentIndex > 0) {
             currentIndex--;
             updateCarousel();
@@ -124,8 +85,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Keyboard navigation
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') moveNext();
-        if (e.key === 'ArrowLeft') movePrev();
+        if (e.key === 'ArrowRight' && currentIndex < items.length - 1) {
+            currentIndex++;
+            updateCarousel();
+        }
+        if (e.key === 'ArrowLeft' && currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+        }
     });
     
     // Add touch swipe support
@@ -144,20 +111,24 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleSwipe() {
         const swipeThreshold = 50; // Minimum distance for a swipe
         
-        if (touchEndX < touchStartX - swipeThreshold) {
+        if (touchEndX < touchStartX - swipeThreshold && currentIndex < items.length - 1) {
             // Swipe left, move to next
-            moveNext();
+            currentIndex++;
+            updateCarousel();
         }
         
-        if (touchEndX > touchStartX + swipeThreshold) {
+        if (touchEndX > touchStartX + swipeThreshold && currentIndex > 0) {
             // Swipe right, move to previous
-            movePrev();
+            currentIndex--;
+            updateCarousel();
         }
     }
     
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        centerItem(currentIndex);
+    });
+    
     // Initialize the carousel
     initCarousel();
-    
-    // Set first item as active initially
-    items[0].classList.add('active');
 }); 

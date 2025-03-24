@@ -32,6 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Center the first item
         centerItem(0);
+        
+        // Setup card link behavior
+        setupCardLinks();
     }
     
     function centerItem(index) {
@@ -88,6 +91,29 @@ document.addEventListener('DOMContentLoaded', () => {
         nextButton.disabled = currentIndex >= items.length - 1;
         prevButton.style.opacity = prevButton.disabled ? '0.5' : '1';
         nextButton.style.opacity = nextButton.disabled ? '0.5' : '1';
+    }
+    
+    // Setup card link click handling
+    function setupCardLinks() {
+        items.forEach((item, index) => {
+            const cardLink = item.querySelector('.card-link');
+            
+            if (cardLink) {
+                cardLink.addEventListener('click', function(e) {
+                    // If this is not the active card
+                    if (index !== currentIndex) {
+                        e.preventDefault(); // Prevent navigation
+                        
+                        // Update the current index
+                        currentIndex = index;
+                        
+                        // Update carousel to focus on this card
+                        updateCarousel();
+                    }
+                    // Active cards will navigate normally
+                });
+            }
+        });
     }
     
     // Event listeners

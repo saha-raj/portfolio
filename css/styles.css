@@ -14,6 +14,7 @@
   --color-h1-nav: #313A49;
   --color-h2: #4F5D75;
   --color-body: #333333;
+  --color-text-card: #7989A4;
   --color-footer: #adb5bd;
   
   /* Colors */
@@ -33,7 +34,7 @@
   --container-width: 1200px;
   --container-padding: 0 2rem;
   --section-spacing: 5rem;
-  --card-border-radius: 8px;
+  --card-border-radius: 0px;
   --card-transition: all 0.3s ease;
 }
 
@@ -240,7 +241,7 @@ p {
   /* use full track height */
   aspect-ratio: 2 / 3;
   /* fixed aspect ratio */
-  opacity: 0.5;
+  opacity: 0.3;
   transition: transform 0.3s ease, opacity 0.3s ease;
   margin: 0 5rem;
 }
@@ -258,6 +259,15 @@ p {
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Card link styling */
+.card-link {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 /* Image maintains fixed aspect ratio */
@@ -287,6 +297,27 @@ p {
   flex: 1;
   padding: 1rem;
   overflow: auto;
+}
+
+/* Card content text styling */
+.card-content h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-h2);
+  line-height: 1.3;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+}
+
+.card-content p {
+  font-size: 0.95rem;
+  color: var(--color-text-card);
+  line-height: 1.5;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.1rem;
 }
 
 /* Arrows precisely placed near edges */

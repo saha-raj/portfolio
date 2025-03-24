@@ -269,7 +269,8 @@ p {
   overflow: hidden; /* Hide overflow to clip image sides */
 }
 
-.card-image img {
+.card-image img,
+.card-image video {
   position: absolute;
   top: 0;
   left: 50%; /* Center the image horizontally */

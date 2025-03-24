@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update button states
         updateButtons();
         
+        // Initialize video playback
+        updateVideos();
+        
         // Center the first item
         centerItem(0);
     }
@@ -57,8 +60,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // Center the current item
         centerItem(currentIndex);
         
+        // Manage video playback
+        updateVideos();
+        
         // Update button states
         updateButtons();
+    }
+    
+    function updateVideos() {
+        // Play videos in active item, pause videos in inactive items
+        items.forEach((item, index) => {
+            const video = item.querySelector('video');
+            if (video) {
+                if (index === currentIndex) {
+                    // Play video in active item
+                    video.play().catch(e => console.log("Video play error:", e));
+                } else {
+                    // Pause video in inactive items
+                    video.pause();
+                }
+            }
+        });
     }
     
     function updateButtons() {

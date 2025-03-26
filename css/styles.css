@@ -118,7 +118,7 @@ p {
 }
 
 .section-title {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   position: relative;
   display: inline-block;
   text-align: left;
@@ -626,7 +626,7 @@ p {
 .skills-section,
 .experience-section,
 .projects-section {
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 }
 
 .skills-grid,
@@ -647,10 +647,10 @@ p {
 }
 
 .skill-list li {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   position: relative;
   padding-left: 1.5rem;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .skill-list li::before {
@@ -663,14 +663,14 @@ p {
 
 /* Experience section specific styles */
 .experience-section {
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
   width: 100%;
 }
 
 /* Ensure experience items align with other text content */
 .experience-item {
-  margin-bottom: 2.5rem;
-  padding-bottom: 2rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.75rem;
   border-bottom: 1px solid var(--color-border);
   max-width: 800px;
 }
@@ -707,9 +707,9 @@ p {
 }
 
 .experience-duties li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   position: relative;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .experience-duties li::before {
@@ -814,6 +814,20 @@ p {
   font-family: var(--font-primary);
   font-size: 1rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Placeholder styling */
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--color-text-light);
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+/* Hide placeholder on focus */
+.form-group input:focus::placeholder,
+.form-group textarea:focus::placeholder {
+  opacity: 0;
 }
 
 .form-group input:focus,
@@ -932,18 +946,18 @@ p {
 
 /* Fix experience section spacing */
 .experience-section .section-title {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Fix project section display */
 .projects-section {
   width: 100%;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 }
 
 /* Art & Design Section */
 .art-design-section {
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
   width: 100%;
 }
 
@@ -967,10 +981,10 @@ p {
 }
 
 .art-list li {
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   position: relative;
   padding-left: 1.5rem;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .art-list li::before {
@@ -1000,5 +1014,59 @@ p {
 @media (max-width: 768px) {
   .art-design-list {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Contact info styles */
+.contact-info {
+  background-color: var(--color-background-alt);
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  margin-top: 2rem;
+  max-width: 800px;
+}
+
+.contact-info p {
+  margin-bottom: 1.5rem;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.social-contact {
+  margin-top: 1.5rem;
+}
+
+.linkedin-contact {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.linkedin-contact i {
+  margin-right: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.linkedin-contact:hover {
+  background-color: var(--color-primary-dark);
+  color: white;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .contact-info {
+    padding: 1.5rem;
+  }
+  
+  .linkedin-contact {
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 } 

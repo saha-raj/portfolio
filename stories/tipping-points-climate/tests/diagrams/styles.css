@@ -1,0 +1,28 @@
+#diagram-container {
+    width: 800px;
+    height: 600px;
+    margin: 50px auto;
+    border: 1px solid #ccc;
+}
+
+.diagram-box {
+    fill: rgba(40, 58, 82, 0.6);
+    stroke: #e0e1dd;
+    stroke-width: 1;
+}
+
+.diagram-text {
+    fill: #e0e1dd;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+}
+
+.diagram-arrow {
+    stroke: #e0e1dd;
+    stroke-width: 2;
+    fill: none;
+}
+
+.arrow-head {
+    fill: #e0e1dd;
+}

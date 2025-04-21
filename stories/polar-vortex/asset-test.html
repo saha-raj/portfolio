@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Path Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        .pending { color: orange; }
+        img {
+            max-width: 200px;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+            display: block;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        h2 { margin-top: 30px; }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Asset Path Test</h1>
+    <div id="build-info"></div>
+    
+    <div class="test-section">
+        <h2>Environment Information</h2>
+        <pre id="env-info">Testing...</pre>
+    </div>
+    
+    <div class="test-section">
+        <h2>Image Tests (Relative Paths)</h2>
+        <div>
+            <h3>Favicon (./assets/sagelabs-favicon.png)</h3>
+            <img src="./assets/sagelabs-favicon.png" alt="Favicon" onerror="this.after(document.createTextNode('❌ Failed to load')); this.remove();">
+            <div id="favicon-relative-status" class="pending">Testing...</div>
+        </div>
+        
+        <div>
+            <h3>Earth Texture (./assets/textures/2_no_clouds_8k_no_seaice.jpg)</h3>
+            <img src="./assets/textures/2_no_clouds_8k_no_seaice.jpg" alt="Earth Texture" onerror="this.after(document.createTextNode('❌ Failed to load')); this.remove();">
+            <div id="earth-texture-relative-status" class="pending">Testing...</div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Image Tests (Absolute Paths with BASE_URL)</h2>
+        <div id="absolute-tests">
+            <!-- Will be populated by JS -->
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Fetch Tests</h2>
+        <pre id="fetch-results">Running fetch tests...</pre>
+    </div>
+    
+    <div class="test-section">
+        <h2>Directory Structure Check</h2>
+        <div id="directory-check">Testing environment...</div>
+    </div>
+
+    <script>
+        // Get build info
+        fetch('./build-info.json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('build-info').innerHTML = `
+                    <p>Build version: ${data.version}</p>
+                    <p>Build time: ${data.buildTime}</p>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('build-info').innerHTML = `
+                    <p class="error">Failed to load build info: ${error.message}</p>
+                `;
+            });
+            
+        // Environment info
+        const envInfo = {
+            location: window.location.href,
+            hostname: window.location.hostname,
+            pathname: window.location.pathname,
+            baseElement: document.querySelector('base')?.href || 'No base element found'
+        };
+        
+        document.getElementById('env-info').textContent = JSON.stringify(envInfo, null, 2);
+        
+        // Test relative paths
+        const testImg = (path, statusElementId) => {
+            const img = new Image();
+            const statusElement = document.getElementById(statusElementId);
+            img.onload = () => {
+                statusElement.textContent = `✅ Successfully loaded from ${path}`;
+                statusElement.className = 'success';
+            };
+            img.onerror = () => {
+                statusElement.textContent = `❌ Failed to load from ${path}`;
+                statusElement.className = 'error';
+            };
+            img.src = path;
+        };
+        
+        testImg('./assets/sagelabs-favicon.png', 'favicon-relative-status');
+        testImg('./assets/textures/2_no_clouds_8k_no_seaice.jpg', 'earth-texture-relative-status');
+        
+        // Determine base URL
+        let baseUrl = '';
+        if (window.location.hostname === 'saha-raj.github.io') {
+            baseUrl = '/polar-vortex-viz/';
+        }
+        
+        // Test absolute paths
+        const absoluteTestsContainer = document.getElementById('absolute-tests');
+        const assetPaths = [
+            'assets/sagelabs-favicon.png',
+            'assets/textures/2_no_clouds_8k_no_seaice.jpg',
+            'assets/textures/rodinia_unpix.png',
+            'assets/textures/seaice/seaice_2001.png',
+            'assets/backgrounds/pbd.webp'
+        ];
+        
+        assetPaths.forEach(path => {
+            const fullPath = `${baseUrl}${path}`;
+            const testDiv = document.createElement('div');
+            testDiv.innerHTML = `
+                <h3>${path}</h3>
+                <img src="${fullPath}" alt="${path}" onerror="this.after(document.createTextNode('❌ Failed to load')); this.remove();">
+                <div id="${path.replace(/\//g, '-')}-status" class="pending">Testing ${fullPath}...</div>
+            `;
+            absoluteTestsContainer.appendChild(testDiv);
+            
+            testImg(fullPath, `${path.replace(/\//g, '-')}-status`);
+        });
+        
+        // Fetch tests
+        const fetchResults = [];
+        const fetchTestsContainer = document.getElementById('fetch-results');
+        
+        const testFetch = async (path) => {
+            const fullPath = `${baseUrl}${path}`;
+            try {
+                const response = await fetch(fullPath, { method: 'HEAD' });
+                return {
+                    path: fullPath,
+                    status: response.status,
+                    ok: response.ok,
+                    statusText: response.statusText
+                };
+            } catch (error) {
+                return {
+                    path: fullPath,
+                    error: error.message
+                };
+            }
+        };
+        
+        Promise.all(assetPaths.map(testFetch))
+            .then(results => {
+                fetchTestsContainer.textContent = JSON.stringify(results, null, 2);
+            });
+            
+        // Check for Vite environment
+        const dirCheckContainer = document.getElementById('directory-check');
+        if (window.location.hostname.includes('localhost')) {
+            dirCheckContainer.innerHTML = `
+                <p>Running on localhost - likely a development environment.</p>
+                <p>In development, Vite serves files from the public directory differently than in production.</p>
+            `;
+        } else if (window.location.hostname === 'saha-raj.github.io') {
+            dirCheckContainer.innerHTML = `
+                <p>Running on GitHub Pages.</p>
+                <p>Base URL should be: /polar-vortex-viz/</p>
+                <p>Assets should be in: /polar-vortex-viz/assets/</p>
+            `;
+        } else {
+            dirCheckContainer.innerHTML = `
+                <p>Running on unknown host: ${window.location.hostname}</p>
+            `;
+        }
+    </script>
+</body>
+</html> 

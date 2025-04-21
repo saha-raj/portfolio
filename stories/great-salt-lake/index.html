@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        if (window.performance && window.performance.navigation.type === window.performance.navigation.TYPE_RELOAD) {
+            window.location.href = window.location.pathname;
+        }
+    </script>
+    <script data-goatcounter="https://great-salt-lake.goatcounter.com/count"
+    async src="//gc.zgo.at/count.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Current fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    
+    <!-- Additional fonts from mangroves version -->
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- D3.js Library -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <title>Great Salt Lake</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div class="content">
+        <div class="text-block">
+            <h1>The Shrinking Great Salt Lake: A Visual Time-lapse</h1>
+            <div class="author">
+                <p>By Raj Saha, PhD</p>
+            </div>
+            
+            <p>In this project we use <a href="https://earthengine.google.com/timelapse/">Google Earth Timelapse</a> images of the Great Salt Lake between 1984 and 2022 to create a time-lapse visualization of the lake's changing boundaries and to
+                then compute the area of lake over time. 
+                We primarily use python's <a href="https://opencv.org/">OpenCV</a> library to extract the lake's boundaries from the images and then compute the area of the lake. </p>
+            
+                    
+                <p>The scrollable animation concept is inspired by visualizations in the The New York Times.</p>
+
+                <p>Final results first ... <emph>(give it a second for the frames to load ...)</emph></p>
+
+        </div>
+
+            <div class="sequence-block">
+                <div class="sequence-container">
+                    <img src="assets/images/frames/001.jpg" alt="" class="current-frame">
+                </div>
+                <div class="sequence-progress"></div>
+            </div>
+    
+        <div class="text-block">
+            <h2>Process</h2>
+            <p>Let's examine the process involved in deducing the lake's boundaries from satellite imagery.</p>
+
+            <div class="article-image">
+                <img src="assets/images/01.png" alt="Google Earth Timelapse Image">
+                <p class="caption">An individual image frame from Google Earth Timelapse</p>
+            </div>
+
+            <h2>Channel selection</h2>
+            <p>The original image has Red, Green and Blue Channels. We need to select the channel that has the highest 
+                contrast between the lake and the surrounding land. We do this sort of manually given that we only have 3 
+                channels to choose from and no near infrared. We find that the blue channel has the highest contrast 
+                between the lake and the surrounding land. So we extract the blue channel from the original image and carry out 
+                the image analysis on this channel. At the end, we apply the boundaries back to the original images. </p>
+            <div class="article-image">
+                <img src="assets/images/0203.jpg" alt="Cropped Blue Channel Image">
+                <p class="caption">Left: Extracted blue channel image, with a mask applied that corresponds to the lake's boundaries in 1984. 
+                    Right: The same image with thresholding applied to reveal exposed land (within the bright green polygons).</p>
+            </div>
+        
+            <h2>Baseline year and lake boundaries</h2>
+            <p>1984 being the first year of our images, we select it as our baseline year. Then we apply thresholding 
+                to the blue channel to get the lake's boundaries. Again, this step is done manually. If we have access 
+                to more information such as a digital elevation models, we can use that to automatically determine the 
+                lake's boundaries.</p>
+            
+            <p>Once we have determined a suitable threshold, then we create a mask for the lake's boundaries in 1985. We then use this mask to extract the lake's boundaries from the original set of images.</p>
+        
+            <h2>Computing areas</h2>
+            <p>Applying the mask to the images now gives us the lake's maximum extent for each year. Within the mask, 
+                we then find the lake boundaries in each year. In practice it may be easier to find the exposed land boundaries, 
+                depending on the contrast in the images. Subtracting the total area of the exposed land from the total area of the 
+                lake, we can get the area of the lake for each year.</p>
+
+            <h2>Applying boundaries to images</h2>
+            <p>To show explicitly how the boundaries have changed over time, we apply the boundaries from our blue channel onto the original images.</p>
+            <div class="article-image">
+                <img src="assets/images/04.jpg" alt="Applying exposed land boundaries to the images">
+                <p class="caption">Exposed land polygons applied to the original image. Bright green polygons enclose exposed land.</p>
+            </div>
+
+        
+
+            <h2>Trend</h2>
+            <p>We can now plot the change in area of the lake over time.</p>
+            <div class="article-image chart-container">
+                <div id="lake-area-chart"></div>
+                <!-- <p class="caption">Change in area of Great Salt Lake since 2021</p> -->
+            </div>
+            
+            <p>The quasi-periodic fluctuations in the lake's are are due to variations in precipitation. </p>
+
+            <p>Here is a <a href="https://www.nytimes.com/2022/06/07/climate/salt-lake-city-climate-disaster.html#:~:text=1.9k-,As%20the%20Great%20Salt%20Lake%20Dries%20Up%2C%20Utah%20Faces%20an,Great%20Salt%20Lake%20in%20Utah." target="_blank">great article</a> on how climate change has altered the Great Salt Lake.</p>
+            
+            <h2>Code Base</h2>
+            <p>All work demo'd here, front and back end, was done by me.</p>
+            <p>You can find the code base for this project <a href="https://github.com/saha-raj/great-salt-lake" target="_blank">here</a>.</p>
+
+
+
+        </div>
+
+        
+    </div>
+
+    <hr class="section-divider">
+
+    <div id="more-stories-container"></div>
+
+    <script src="assets/js/scroll-sequence.js"></script>
+    <script src="assets/js/lake-area-chart.js"></script>
+    <script src="assets/js/stories-carousel.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('more-stories.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('more-stories-container').innerHTML = html;
+                    // Initialize the carousel after the content is loaded
+                    if (typeof initStoryCarousel === 'function') {
+                        setTimeout(initStoryCarousel, 100);
+                    }
+                })
+                .catch(error => console.error('Error loading more-stories section:', error));
+        });
+    </script>
+    <footer class="footer">
+        <div class="container">  
+            <p>© 2024 Raj Saha</p>
+            <p><a href="https://github.com/saha-raj/" target="_blank">Github</a> / <a href="https://www.linkedin.com/in/rajsahaphd/" target="_blank">LinkedIn</a></p>
+        </div>
+    </footer>
+</body>
+</html>

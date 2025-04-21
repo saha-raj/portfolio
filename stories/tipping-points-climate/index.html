@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="public/assets/sagelabs-favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.159.0/build/three.module.js",
+                "three/examples/jsm/controls/OrbitControls": "https://unpkg.com/three@0.159.0/examples/jsm/controls/OrbitControls.js",
+                "d3": "https://cdn.jsdelivr.net/npm/d3@7/+esm",
+                "@types/d3": "https://cdn.jsdelivr.net/npm/@types/d3@7/+esm"
+            }
+        }
+    </script>
+
+    <!-- Add MathJax -->
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$']],
+            displayMath: [['$$', '$$']],
+            processEscapes: true,
+            packages: ['base', 'ams', 'noerrors', 'noundefined']
+        },
+        chtml: {
+            scale: 1,
+            minScale: .5,
+            mtextInheritFont: true,
+            merrorInheritFont: true
+        },
+        startup: {
+            typeset: false
+        }
+    };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js">
+    </script>
+    
+    <title>Climate Tipping Points</title>
+    <style>
+        /* body {
+            margin: 0;
+        }
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+        }
+        .text-element {
+            position: absolute;
+            font-family: Arial, sans-serif;
+            pointer-events: none;
+        } */
+    </style>
+    <link rel="stylesheet" href="src/styles/text.css">
+    <link rel="stylesheet" href="src/styles/plots.css">
+    <link rel="stylesheet" href="src/styles/background.css">
+</head>
+<body>
+    <div id="background-container"></div>
+    <div id="canvas-container"></div>
+    
+    <script type="module" src="./src/index.js"></script>
+    <script data-goatcounter="https://climate-tipping.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+:root {
+    /* Define Font Variables */
+    --title-font: "Noto Sans", sans-serif;
+    --body-font: "Noto Sans", sans-serif;
+    --ui-font: "Noto Sans", sans-serif; /* Using Noto Sans for UI too */
+    --author-font: "Lato", sans-serif;
+    --nav-font: "JetBrains Mono", monospace; /* For labels/nav */
+}
+
+/* CSS styles will go here */ 
+body {
+    /* Set a background color for the page */
+    background-color: #f0f0f0; /* Light grey background */
+
+    /* Create the dot pattern using radial gradient */
+    /* A small grey dot (#aaa) of 1px radius */
+    /* Transparent background around the dot */
+    background-image: radial-gradient(#aaa 1px, transparent 1px);
+
+    /* Set the size of the repeating background pattern */
+    /* This defines the spacing of the dots (20px grid) */
+    background-size: 20px 20px;
+
+    /* Ensure the body takes full viewport height */
+    min-height: 100vh;
+    margin: 0; /* Remove default body margin */
+
+    /* Make the body a positioning context for absolute children */
+    position: relative;
+}
+
+/* Style the SVG logo */
+.logo-svg {
+    /* Set a fixed width to control the size */
+    width: 20%; /* Adjust as needed */
+    max-width: 350px;
+    /* Position the logo absolutely */
+    position: absolute;
+
+    /* Position relative to the top-left corner using percentages */
+    top: 10%;
+    left: 20%;
+
+    /* Ensure it's above other elements if needed */
+    z-index: 10;
+}
+
+/* Basic Styling for all Story Cards (Updated based on example) */
+.story-card {
+    /* background-color: #ffffff; /* White background */
+    background: var(--card-bg, #ffffff); /* Use variable or default white */
+    /* border: 1px solid #ccc; /* Light grey border */
+    border: 1px solid #eaeaea; /* Use example border color */
+    /* padding: 15px; */ /* Remove old padding */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Keep subtle shadow */
+    overflow: hidden; /* Keep overflow hidden */
+    /* Add flexbox layout */
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Adjust height automatically */
+}
+
+/* Style images within cards (Updated based on example) */
+.story-card img,
+.story-card video {
+    /* max-width: 100%; */
+    width: 100%; /* Ensure image/video takes full width */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Keep block display */
+    /* margin-bottom: 10px; */ /* Remove old margin */
+    object-fit: cover; /* Cover the area, potentially cropping */
+    /* background-color: #000; */ /* Optional: background for loading/transparent images */
+}
+
+/* Style for the content area within the card */
+.story-card-content {
+    padding: 1rem; /* Use rem for padding */
+    flex-grow: 1; /* Allow content area to grow */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Static position for the 'Who We Are' card */
+#who-we-are-card {
+    position: absolute;
+    /* Position it relative to the logo or top-left */
+    /* Example: below the logo, aligned left */
+    top: 25%; /* Adjust based on logo size/position */
+    left: 20%; /* Match logo's left position */
+    width: 250px; /* Example fixed width */
+    z-index: 9; /* Below logo if overlapping */
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+/* Styling for Card Labels */
+.card-label {
+    font-family: var(--nav-font);
+    color: #415A78; /* Use a color from the SVG */
+    background-color: #f0f0f0; /* Match page background */
+    padding: 2px 6px;
+    border: 1px solid #ccc;
+    /* Positioning will be handled by JS later */
+    /* For now, make them absolute to remove from flow */
+    position: absolute;
+    z-index: 11; /* Above cards */
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+/* Styling for Card Headers (h4 in example, updated) */
+.story-card h4 {
+    font-family: var(--title-font);
+    /* font-size: 1.1em; /* Example header size */
+    /* font-size: var(--h4-size); */ /* Use variable if defined, else fallback */
+    font-size: 1.1em; /* Keep previous size for now */
+    /* margin-top: 0; */
+    /* margin-bottom: 8px; */
+    margin: 0 0 0.5rem 0; /* Use rem margin from example */
+    color: #333;
+    font-weight: 600; /* Use font-weight from example */
+}
+
+/* Styling for Card Captions (p in example, updated) */
+.story-card p {
+    font-family: var(--body-font);
+    /* font-size: 0.9em; /* Example caption size */
+    /* font-size: var(--small-text); */ /* Use variable if defined, else fallback */
+    font-size: 0.9em; /* Keep previous size for now */
+    /* color: #666; */
+    color: var(--footer-text, #666); /* Use variable or default grey */
+    margin: 0; /* Remove all margin */
+}
+
+/* Container for dynamic card + label (for JS positioning) */
+.card-container {
+    position: absolute; /* Needed for JS positioning */
+    /* Width/height/top/left will be set by JS */
+} 

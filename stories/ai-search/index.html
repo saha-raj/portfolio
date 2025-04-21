@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathfinding Algorithms</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Main fonts used in the template -->
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/maze-search.css">
+    <!-- Add Prism.js for better code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+    <!-- Add JetBrains Mono font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
+    <!-- Make sure font-display is set to swap to prevent invisible text during loading -->
+    <style>
+        /* Ensure fonts render properly even if loading is delayed */
+        body {
+            font-display: swap;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="text-block">
+            <h1>Pathfinding Algorithms: A Visual Guide</h1>
+            <div class="author">
+                <p>By Raj Saha, PhD</p>
+            </div>
+            
+            <p>
+                An interactive visualization of popular pathfinding algorithms including Breadth-First Search (BFS), Depth-First Search (DFS), A* Search, Greedy Best-First Search, and Dijkstra's Algorithm.
+            </p>
+            
+            
+        </div>
+
+        <div class="text-block">
+            <h2>Maze Search Algorithms</h2>
+            
+            <p>Search algorithms are fundamental techniques in computer science for finding paths through complex spaces. They form the backbone of many applications, from navigation systems to artificial intelligence.</p>
+            
+            <p>These algorithms can be broadly categorized based on their search strategies:</p>
+            
+            <ul>
+                <li><strong>Uninformed Search</strong>: Algorithms like BFS and DFS that have no additional information about the problem beyond what's provided in the problem definition.</li>
+                <li><strong>Informed Search</strong>: Algorithms like A* and Greedy Best-First Search that use heuristic functions to estimate the cost to reach the goal, potentially finding solutions more efficiently.</li>
+                <li><strong>Weighted Search</strong>: Algorithms like Dijkstra's that consider the cost of paths to find the optimal solution.</li>
+            </ul>
+            
+            <p>The visualization above allows you to see how each algorithm explores the maze differently, highlighting their unique characteristics and trade-offs between optimality, completeness, and efficiency.</p>
+        </div>
+
+        <!-- Simulation container -->
+        <div class="simulation-container">
+            <div class="simulation-inner">
+                <div class="simulation-grid">
+                    <!-- Left column: Maze parameters -->
+                    <div class="controls-column">
+                        <div class="proportion-control-container">
+                            <h3>Maze Parameters</h3>
+                            <div class="param-group">
+                                <label for="grid-size">Grid Size:</label>
+                                <div class="param-description">Size of the maze grid (NxN)</div>
+                                <div class="slider-container">
+                                    <input type="range" id="grid-size" min="5" max="25" value="15" class="proportion-slider">
+                                    <div class="slider-value" id="grid-size-value">15 x 15</div>
+                                </div>
+                            </div>
+                            <div class="param-group">
+                                <label for="obstacle-density">Obstacle Density:</label>
+                                <div class="param-description">Percentage of cells that are obstacles</div>
+                                <div class="slider-container">
+                                    <input type="range" id="obstacle-density" min="10" max="35" value="20" class="proportion-slider">
+                                    <div class="slider-value" id="obstacle-density-value">20%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button id="generate-maze" class="primary-button">Generate Maze</button>
+                            <button id="reset-maze" class="secondary-button">Reset</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Middle column: Maze visualization -->
+                    <div class="maze-visualization-column">
+                        <div id="maze-container"></div>
+                    </div>
+                    
+                    <!-- Right column: Algorithm controls and stats -->
+                    <div class="algorithm-column">
+                        <div class="strategy-selection">
+                            <h3>Search Algorithm</h3>
+                            <div class="strategy-group">
+                                <select id="search-algorithm">
+                                    <option value="bfs">Breadth-First Search</option>
+                                    <option value="dfs">Depth-First Search</option>
+                                    <option value="astar">A* Search</option>
+                                    <option value="greedy">Greedy Best-First Search</option>
+                                    <option value="dijkstra">Dijkstra's Algorithm</option>
+                                </select>
+                                <div class="strategy-description" id="algorithm-description">
+                                    Explores all neighbors at the current depth before moving deeper. Guarantees shortest path.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="visualization-options">
+                            <div class="option-item">
+                                <input type="checkbox" id="show-branching" checked>
+                                <label for="show-branching">Show Branching</label>
+                            </div>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button id="solve-maze" class="primary-button" disabled>Solve Maze</button>
+                            <button id="step-solve" class="secondary-button" disabled>Step</button>
+                        </div>
+                        
+                        <div class="simulation-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Nodes Visited:</span>
+                                <span class="stat-value" id="nodes-visited">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Path Length:</span>
+                                <span class="stat-value" id="path-length">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Status: </span>
+                                <span class="stat-value" id="search-status">Ready</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add this after the simulation container and before the "How the Algorithms Work" section -->
+        <div class="simulation-container pseudocode-container">
+            <div class="simulation-inner">
+                <div class="simulation-grid">
+                    <!-- Left column: Algorithm selection -->
+                    <div class="controls-column">
+                        <div class="proportion-control-container">
+                            <h3>Algorithm Pseudocode</h3>
+                            <div class="param-group">
+                                <label for="pseudocode-algorithm">Select Algorithm:</label>
+                                <div class="param-description">View the implementation details</div>
+                                <select id="pseudocode-algorithm" class="algorithm-select">
+                                    <option value="bfs">Breadth-First Search</option>
+                                    <option value="dfs">Depth-First Search</option>
+                                    <option value="astar">A* Search</option>
+                                    <option value="greedy">Greedy Best-First Search</option>
+                                    <option value="dijkstra">Dijkstra's Algorithm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Middle column: Pseudocode display -->
+                    <div class="pseudocode-visualization-column">
+                        <div id="pseudocode-container"></div>
+                    </div>
+                    
+                    <!-- Right column: Explanation area -->
+                    <div class="explanation-column">
+                        <div id="explanation-container">
+                            <div class="explanation-placeholder">
+                                Hover over code blocks to see explanations.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-block">
+            <h2>How the Algorithms Work</h2>
+            
+            <p>Each algorithm in this visualization demonstrates a different approach to pathfinding:</p>
+            
+            <ul>
+                <li><strong>Breadth-First Search (BFS)</strong> uses a queue data structure to explore all neighbors at the current depth before moving deeper. This guarantees finding the shortest path in unweighted graphs but may use more memory than other approaches.</li>
+                
+                <li><strong>Depth-First Search (DFS)</strong> uses a stack data structure to explore as far as possible along each branch before backtracking. While it doesn't guarantee the shortest path, it can be more memory-efficient for certain problems.</li>
+                
+                <li><strong>A* Search</strong> combines the advantages of Dijkstra's Algorithm and Greedy Best-First Search. It uses both the cost to reach a node and a heuristic estimate of the cost to the goal, making it both optimal and efficient when using an admissible heuristic.</li>
+                
+                <li><strong>Greedy Best-First Search</strong> always expands the node that appears closest to the goal according to a heuristic function. It's typically faster than BFS or Dijkstra's but doesn't guarantee the shortest path.</li>
+                
+                <li><strong>Dijkstra's Algorithm</strong> can be viewed as a special case of A* where the heuristic is always zero. It finds the shortest path from the start to all other nodes in the graph, making it optimal but potentially slower than more focused algorithms.</li>
+            </ul>
+            
+            <p>The visualization shows how each algorithm explores the maze differently. BFS expands in concentric "waves" from the start point, while DFS follows a single path as far as possible before trying alternatives. A* and Greedy Best-First Search tend to explore in the direction of the goal, with A* balancing between path cost and heuristic distance. Dijkstra's Algorithm expands outward from the start similar to BFS, but prioritizes nodes with the lowest total path cost.</p>
+        </div>
+
+        
+
+    </div>
+
+    <div class="section-divider"></div>
+    
+    <div id="more-stories-container"></div>
+    
+    <script src="assets/js/stories-carousel.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('more-stories.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('more-stories-container').innerHTML = html;
+                    // Initialize the carousel after the content is loaded
+                    if (typeof initStoryCarousel === 'function') {
+                        setTimeout(initStoryCarousel, 100);
+                    }
+                })
+                .catch(error => console.error('Error loading more-stories section:', error));
+        });
+    </script>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Raj Saha</p>
+            <p><a href="https://github.com/saha-raj/" target="_blank">Github</a> / <a
+                    href="https://www.linkedin.com/in/rajsahaphd/" target="_blank">LinkedIn</a></p>
+        </div>
+    </footer>
+
+    <!-- Load D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <!-- Load the maze search simulation script -->
+    <script src="js/maze-search.js"></script>
+
+    <!-- Add this before the closing </body> tag -->
+    <script src="js/pseudocode.js?v=1.1"></script>
+    <!-- Add Prism.js for better code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+</body>
+</html> 

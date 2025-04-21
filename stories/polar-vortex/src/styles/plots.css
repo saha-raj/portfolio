@@ -1,0 +1,306 @@
+:root {
+    --dot-radius-filled: 0.4rem;
+    --dot-radius-unfilled: 0.5rem;
+    --width-unfilled: 0.3rem;
+    --main-font: 'Lato', sans-serif;
+    --text-color: #e0e1dd;
+    --plot-line-color: white;
+    --plot-line-width: 0.3rem;
+    --color-hot-house: #f07167;
+    --color-ice-house: #0081a7;
+    --color-initial-point: #00afb9;
+    --color-tracking-point: #00afb9;
+}
+
+/* Plot containers */
+.plot-area {
+    position: absolute !important;
+    width: 32% !important;
+    height: auto !important;
+    text-align: center !important;  /* Center the plot horizontally */
+}
+
+/* D3 plot elements */
+/* .equilibrium-point { */
+    /* fill: #f07167; */
+    /* stroke: white;
+    stroke-width: 1px; */
+    /* r: var(--dot-radius-filled); */
+/* } */
+
+.equilibrium-point-hot {
+    r: 0.4rem;
+    /* fill: #fb8500; */
+    fill: var(--color-hot-house);    
+    /* stroke: #fb8500;
+    stroke-width: 0.2rem; */
+}
+
+.equilibrium-point-ice {
+    r: var(--dot-radius-filled);
+    fill: var(--color-ice-house);  /* blue */
+    /* stroke: none; */
+}
+
+.equilibrium-point-stable {
+    r: var(--dot-radius-filled);
+    fill: #99d98c;  /* stable equilibrium green */
+}
+
+.equilibrium-point-unstable {
+    r: var(--dot-radius-filled);
+    fill: #fff;  
+    stroke: #8d99ae;
+    stroke-width: var(--width-unfilled);
+}
+
+.tracking-dot {
+    r: var(--dot-radius-unfilled);
+    fill: var(--color-tracking-point);  /* gold color */
+    /* stroke: #000;
+    stroke-width: 1; */
+}
+
+.initial-point {
+    fill: #ffffff;
+    stroke: var(--color-initial-point);
+    stroke-width: var(--width-unfilled);
+    r: var(--dot-radius-unfilled);
+}
+
+.sim-point {
+    fill: #ff9f1c;  
+    r: var(--dot-radius-filled);
+}
+
+/* Axes styles */
+.x-axis, .y-axis {
+    font-size: 0.8rem;
+    color: var(--text-color);
+    font-family: var(--main-font);
+}
+
+.x-axis text, .y-axis text {
+    fill: var(--text-color);
+}
+
+.x-label, .y-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: var(--main-font);
+    fill: var(--text-color);
+}
+
+/* Hide y-axis */
+.y-axis {
+    display: none;
+}
+
+/* Line styles */
+.potential-line {
+    stroke: var(--plot-line-color);
+    stroke-width: var(--plot-line-width);
+    fill: none;
+    stroke-linecap: round;
+}
+
+/* Arrow marker */
+.plot-area defs marker#arrow {
+    fill: #666;
+} 
+
+
+
+
+.slider-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0px;
+    width: 100%; 
+
+}
+.slider-group label {
+    display: block;
+}
+.slider-group div {  /* container for each slider+value pair */
+    display: flex;
+    align-items: center;  /* vertical centering */
+    gap: 10px;  /* consistent gap between slider and value */
+}
+.slider-group input[type="range"] {
+    width: 200px;
+    margin: 0;
+}
+
+.slider-group span {  /* the value display */
+    min-width: 40px;
+    line-height: 1;  /* align text vertically */
+    margin-top: -2px;
+    text-align: right;
+}
+
+
+.sim-controls {
+    /* background: #313949 !important; */
+    /* padding: 20px !important; */
+    border-radius: 8px !important;
+    color: var(--text-color);
+    font-family: var(--main-font);
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 20px !important;
+}
+
+.sim-controls label {
+    color: var(--text-color);
+    font-size: 0.9rem;
+    font-family: var(--main-font);
+    /* margin-bottom: 2px;
+    margin-top: 10px; */
+}
+
+.sim-controls span {
+    color: var(--text-color);
+    font-size: 0.9rem;
+    font-family: var(--main-font);
+}
+
+.sim-controls-visibility {
+    transition: opacity 0.3s ease-in-out;
+    visibility: hidden;  /* Start hidden */
+}
+
+.sim-controls-visibility[style*="opacity: 0"] {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.sim-controls-visibility[style*="opacity: 1"] {
+    visibility: visible;
+    pointer-events: auto;
+} 
+
+.sim-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: var(--main-font);
+    /* width: 100%; */
+    width: auto !important;  
+    height: auto !important;
+    align-self: flex-start;
+    /* margin-top: 20px;  Align with first slider */
+}
+
+.sim-button:disabled {
+    background-color: #cccccc;
+    cursor: default;
+}
+.sim-button:hover {
+    background-color: #45a049;  /* Slightly darker green */
+}
+
+/* Slider styling */
+input[type="range"] {
+    -webkit-appearance: none;  /* Remove default appearance */
+    appearance: none;
+    background: transparent;
+    width: 200px;
+    margin: 0;
+}
+
+/* Track styling */
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    background: #4a4a4a;
+    border-radius: 2px;
+    border: none;
+}
+
+input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 4px;
+    background: #4a4a4a;
+    border-radius: 2px;
+    border: none;
+}
+
+/* Thumb styling */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+    margin-top: -6px;  /* Center thumb on track */
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+}
+
+/* Hover effects */
+input[type="range"]:hover::-webkit-slider-thumb {
+    background: #45a049;
+}
+
+input[type="range"]:hover::-moz-range-thumb {
+    background: #45a049;
+}
+
+input[type="range"]:disabled::-webkit-slider-thumb {
+    background: #cccccc;  /* Gray color */
+    cursor: default;
+}
+
+input[type="range"]:disabled::-moz-range-thumb {
+    background: #cccccc;  /* Gray color */
+    cursor: default;
+}
+
+/* Position sim-v-plot in top-right corner */
+.plot-area[id="sim-v-plot"] {
+    transform: translate(-50%, -50%) !important;
+    /* border: 2px solid red; */
+}
+
+/* Position sim-solution-plot in top-left corner */
+.plot-area[id="sim-solution-plot"] {
+    transform: translate(-50%, -50%) !important;
+    /* border: 2px solid blue; */
+}
+
+/* Center standalone plots in canvas container */
+.plot-area[id="explanation-potential"],
+.plot-area[id="explanation-temperature"] {
+    transform: translate(-50%, -50%) !important;
+    /* border: 2px solid green; */
+}
+
+.plot-area[id="animated-potential-plot"],
+.plot-area[id="animated-hysteresis-plot"],
+.plot-area[id="albedo-plot"],
+.plot-area[id="animated-solution-plot"] {
+    transform: translate(-50%, -50%) !important;
+    /* border: 2px solid green; */
+}
+
+/*  */
+

@@ -1,0 +1,442 @@
+/* Maze Search Visualization Styles */
+
+/* Simulation container adjustments */
+.simulation-container {
+    padding: 2rem 0;
+    overflow-x: auto;
+}
+
+.simulation-grid {
+    grid-template-columns: 200px minmax(400px, 1fr) 350px !important;
+    gap: 20px;
+}
+
+/* Maze visualization column */
+.maze-visualization-column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    height: 700px;
+    min-width: 700px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#maze-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Button styles */
+.primary-button {
+    background-color: var(--primary-btn, #3a86ff);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.primary-button:hover {
+    background-color: var(--primary-btn-hover, #2a75ee);
+}
+
+.primary-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.secondary-button {
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.secondary-button:hover {
+    background-color: #e9ecef;
+}
+
+.secondary-button:disabled {
+    color: #999;
+    border-color: #eee;
+    cursor: not-allowed;
+}
+
+/* Simulation stats */
+.simulation-stats {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.stat-item:last-child {
+    margin-bottom: 0;
+}
+
+.stat-label {
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9em;
+}
+
+.stat-value {
+    font-family: monospace;
+    font-size: 0.9em;
+    color: #8d99ae;
+}
+
+/* Slider value display */
+.slider-value {
+    text-align: center;
+    font-family: monospace;
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+/* Algorithm selection */
+#search-algorithm {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-bottom: 8px;
+    font-family: var(--ui-font, "Noto Sans", sans-serif);
+    font-size: 0.9em;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+#search-algorithm:focus {
+    outline: none;
+    border-color: var(--primary-btn, #3a86ff);
+    box-shadow: 0 0 0 2px rgba(58, 134, 255, 0.2);
+}
+
+.strategy-description {
+    font-size: 0.85em;
+    color: #666;
+    line-height: 1.4;
+    margin-top: 5px;
+}
+
+/* Style the algorithm column (new right column) */
+.algorithm-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-self: start;
+}
+
+/* Button group spacing */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* Make buttons fill their container */
+.button-group button {
+    flex: 1;
+}
+
+.simulation-inner {
+    min-width: 1100px; /* Ensure minimum width to accommodate the larger maze */
+}
+
+/* Visualization options */
+.visualization-options {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+.option-item label {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.option-item input[type="checkbox"] {
+    cursor: pointer;
+}
+
+/* Pseudocode Container Styles */
+.pseudocode-container {
+    margin-top: 3rem;
+}
+
+/* Pseudocode visualization column */
+.pseudocode-visualization-column {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 300px;
+    height: auto;
+    min-width: 700px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: visible;
+}
+
+#pseudocode-container {
+    width: 100%;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Algorithm select dropdown */
+.algorithm-select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-bottom: 8px;
+    font-family: var(--ui-font, "Noto Sans", sans-serif);
+    font-size: 0.9em;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.algorithm-select:focus {
+    outline: none;
+    border-color: var(--primary-btn, #3a86ff);
+    box-shadow: 0 0 0 2px rgba(58, 134, 255, 0.2);
+}
+
+/* Explanation column */
+.explanation-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-self: start;
+    height: auto;
+}
+
+#explanation-container {
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 0;
+    width: 330px;
+    min-height: 100px;
+    height: auto;
+    border: none;
+    position: relative;
+}
+
+.explanation-placeholder {
+    display: none;
+}
+
+/* Style the explanation box */
+.explanation {
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
+    position: absolute;
+    width: 100%;
+}
+
+.explanation-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.explanation-text {
+    color: #555;
+    line-height: 1.5;
+}
+
+/* Additional pseudocode styling */
+.pseudocode-pre {
+    margin: 0;
+    padding: 15px;
+    background-color: #fafafa;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.pseudocode-code {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    background: none !important;
+    text-shadow: none !important;
+    white-space: pre-wrap !important;
+}
+
+.code-line {
+    display: flex;
+    padding: 2px 0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.code-line:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.line-number {
+    color: #6c757d;
+    text-align: right;
+    padding-right: 10px;
+    user-select: none;
+    min-width: 30px;
+}
+
+.indent {
+    display: inline-block;
+    white-space: pre;
+    color: transparent;
+    background-color: #f0f0f0;
+    border-right: 1px dotted #ccc;
+}
+
+.keyword {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.function {
+    color: #6f42c1;
+}
+
+.comment {
+    color: #6c757d;
+    font-style: italic;
+}
+
+.string {
+    color: #28a745;
+}
+
+.number {
+    color: #fd7e14;
+}
+
+.operator {
+    color: #e83e8c;
+}
+
+/* VS Code-inspired syntax highlighting */
+.keyword {
+    color: #0033b3; /* deep blue */
+    font-weight: 500;
+}
+
+.function {
+    color: #7a3e9d; /* purple */
+}
+
+.comment {
+    color: #8c8c8c; /* gray */
+    font-style: italic;
+}
+
+.string {
+    color: #067d17; /* green */
+}
+
+.number {
+    color: #1750eb; /* blue */
+}
+
+.operator {
+    color: #000000; /* black */
+}
+
+.text {
+    color: #333333; /* dark gray */
+}
+
+/* Better code styling with JetBrains Mono */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* Fix code display */
+pre[class*="language-"] {
+    margin: 0 !important;
+    padding: 15px !important;
+    background-color: #fafafa !important;
+    border-radius: 6px !important;
+    border: 1px solid #e0e0e0 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+code[class*="language-"] {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    white-space: pre !important;
+    tab-size: 4 !important;
+}
+
+.code-line {
+    display: flex;
+    padding: 2px 0;
+    cursor: pointer;
+}
+
+.code-line:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.line-number {
+    color: #999;
+    text-align: right;
+    padding-right: 15px;
+    user-select: none;
+    min-width: 30px;
+    opacity: 0.6;
+}
+
+.line-content {
+    flex: 1;
+}
+
+/* Fix overlap issue on small screens */
+@media (max-width: 1200px) {
+    .simulation-inner {
+        overflow-x: auto;
+    }
+    
+    .simulation-grid {
+        min-width: 1100px; /* Prevent columns from stacking */
+    }
+} 

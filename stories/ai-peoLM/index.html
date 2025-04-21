@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Machine's Dream</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Main fonts used in the template -->
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="content">
+        <div class="text-block">
+            <h1>A Machine's Dream</h1>
+            <div class="author">
+                <p>Raj Saha, PhD</p>
+            </div>
+            
+            <p>
+                How does an artificial intelligence, specifically a language model, "understand" text? While true understanding remains elusive, we can visualize how these models process information word by word. This visualization explores the internal state of a simple Recurrent Neural Network (LSTM) trained exclusively on the complete works of Edgar Allan Poe.
+            </p>
+            <p>
+                The goal is to glimpse the model's "thought process" as it reads a phrase. We represent each word in the model's vocabulary as a point in a 3D space, derived from its learned 'embedding'. Words the model considers similar should appear closer together.
+            </p>
+            <p>
+                As the model reads the input phrase "dream within a dream", its internal state (or "thought point", shown as black text) moves through this 3D space. Lines connect this moving thought point to the words the model predicts are most likely to come next (shown in blue). This allows us to observe how context dynamically shifts the model's focus within its learned representation of Poe's language.
+            </p>
+            <p>
+                Click on the faint grey points to reveal the words they represent. Use your mouse to rotate, pan, and zoom the 3D space. Explore the machine's interpretation of Poe's haunting prose.
+            </p>
+        </div>
+
+        <div class="simulation-container">
+            <div id="poe-viz-area" style="width: 100%; height: 800px; position: relative;">
+                <div id="viz-loading-indicator" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Lato', sans-serif; color: #555;">Loading Visualization...</div>
+                <div id="pca-note-display" style="position: absolute; bottom: 10px; left: 10px; font-size: 12px; color: #777; font-family: 'Lato', sans-serif; max-width: calc(100% - 20px);"></div>
+            </div>
+            
+        </div>
+
+        <div class="text-block">
+            <h2>How It Works</h2>
+            
+            <p>This visualization relies on several key steps:</p>
+            
+            <ul>
+                <li><strong>Training Data:</strong> A collection of Edgar Allan Poe's public domain works was used to train a simple LSTM language model.</li>
+                <li><strong>Word Embeddings:</strong> The model learns a vector representation (embedding) for each unique word. Similar words ideally have similar vectors.</li>
+                <li><strong>Dimensionality Reduction:</strong> These high-dimensional vectors are reduced to 3D using PCA (Principal Component Analysis) for visualization.</li>
+                <li><strong>Thought Vector:</strong> The LSTM maintains an internal hidden state vector that summarizes the sequence read so far. This is the "thought point".</li>
+                <li><strong>Trajectory:</strong> As the model processes the input phrase "dream within a dream", the 3D position of its thought point is tracked, creating a trajectory.</li>
+                <li><strong>Prediction:</strong> At each step, the model predicts the most likely next words based on its current thought point. Lines are drawn from the thought point to the top predicted words.</li>
+            </ul>
+            
+            <p>The PCA reduction and the projection of the thought vector into the embedding space involve approximations. This visualization provides an intuitive glimpse, not a perfect representation, of the model's internal workings.</p>
+            
+        </div>
+
+        
+
+    </div>
+
+
+
+    <div id="more-stories-container"></div>
+    
+    <script src="assets/js/stories-carousel.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('more-stories.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('more-stories-container').innerHTML = html;
+                    // Initialize the carousel after the content is loaded
+                    if (typeof initStoryCarousel === 'function') {
+                        setTimeout(initStoryCarousel, 100);
+                    }
+                })
+                .catch(error => console.error('Error loading more-stories section:', error));
+        });
+    </script>
+
+<footer class="footer">
+    <div class="container">
+        <p>© 2024 Raj Saha</p>
+        <p><a href="https://github.com/saha-raj/" target="_blank">Github</a> / <a
+                href="https://www.linkedin.com/in/rajsahaphd/" target="_blank">LinkedIn</a></p>
+    </div>
+</footer>
+
+    <!-- Load D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Load Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Load OrbitControls for Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- REMOVED old/unused JavaScript modules -->
+    <!-- <script src="js/agent.js"></script> -->
+    <!-- <script src="js/simulation.js"></script> -->
+    <!-- <script src="js/visualization.js"></script> -->
+    <!-- <script src="js/main.js"></script> -->
+    <!-- Load NEW Poe visualization script -->
+    <script src="js/poe_visualization.js"></script>
+</body>
+</html> 

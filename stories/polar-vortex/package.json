@@ -1,0 +1,25 @@
+{
+  "name": "scroll-driven-3d",
+  "version": "1.0.0",
+  "description": "Scroll-driven 3D canvas framework",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build && ./copy-assets.sh && ./fix-nojekyll.sh",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages --dotfiles -d dist",
+    "serve-pages": "npx serve --cors -l 3000",
+    "test:diagram": "vite tests/diagrams",
+    "fix-nojekyll": "./fix-nojekyll.sh"
+  },
+  "dependencies": {
+    "d3": "^7.8.5",
+    "three": "^0.162.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.2.0",
+    "vite": "^5.1.4"
+  },
+  "type": "module"
+}

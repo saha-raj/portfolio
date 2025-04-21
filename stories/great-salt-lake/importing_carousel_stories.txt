@@ -1,0 +1,21 @@
+cp ../firefly-synchrony/css/styles_to_append.css css/
+cp css/styles.css css/styles.css.backup
+cat css/styles_to_append.css >> css/styles.css
+
+cp ../firefly-synchrony/more-stories.html .
+
+mkdir -p assets/js
+cp ../firefly-synchrony/assets/js/stories-carousel.js assets/js/
+
+mkdir -p assets/images/stories
+cp -r ../firefly-synchrony/images/stories/* images/stories/
+
+
+rm -f images/stories/*.gif
+git add -u images/stories/
+
+
+i want to delete the files in images/stories/*.gif and make sure that the git is updated accordingly
+then i want to git add, commit, tag to v2.1.0 and push to remote
+
+npx http-server

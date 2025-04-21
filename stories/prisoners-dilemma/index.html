@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prisoner's Dilemma Simulation</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Main fonts used in the template -->
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="content">
+        <div class="text-block">
+            <h1>Prisoner's Dilemma Simulation</h1>
+            <div class="author">
+                <p>By Raj Saha, PhD</p>
+            </div>
+            
+            <p>
+                The Prisoner's Dilemma is a fundamental concept in game theory that demonstrates why two rational individuals might not cooperate, even when it's in their best interest to do so. This interactive simulation shows how different strategies perform when competing in a population over many iterations.
+            </p>
+            
+            <p>
+                Watch as agents with different strategies interact, accumulate scores, and visualize how cooperative versus selfish strategies fare in various conditions.
+            </p>
+        </div>
+
+        <div class="simulation-container">
+            <h2>
+                <!-- Removed running indicator from here -->
+            </h2>
+            
+            <div class="simulation-grid">
+                <!-- Controls Column -->
+                <div class="controls-column">
+                    <!-- Tournament parameters -->
+                    <div class="tournament-params">
+                        <!-- Population Proportion - moved inside the tournament-params -->
+                        <div class="param-group">
+                            <label for="proportion-slider">Population Proportion:</label>
+                            <div class="param-description">Proportion of population of each group</div>
+                            <div class="slider-container">
+                                <input type="range" id="proportion-slider" min="5" max="95" value="50" step="5" class="proportion-slider">
+                                <div class="slider-minmax">
+                                    <div class="slider-min" id="proportion-label-left">50%</div>
+                                    <div class="slider-max" id="proportion-label-right">50%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="param-group">
+                            <label for="population-size">Population Size:</label>
+                            <div class="param-description">Number of agents in the simulation</div>
+                            <div class="slider-container">
+                                <input type="range" id="population-size" min="100" max="1000" value="100" step="100">
+                                <div class="slider-minmax">
+                                    <div class="slider-min">100</div>
+                                    <div class="slider-max">100</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="param-group">
+                            <label for="total-games">Total Games:</label>
+                            <div class="param-description">Total number of games to play</div>
+                            <div class="slider-container">
+                                <input type="range" id="total-games" min="100" max="10000" value="1000" step="100">
+                                <div class="slider-minmax">
+                                    <div class="slider-min">100</div>
+                                    <div class="slider-max">1000</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="param-group">
+                            <label for="games-per-pairing">Games Per Pairing:</label>
+                            <div class="param-description">Number of games each pair plays</div>
+                            <div class="slider-container">
+                                <input type="range" id="games-per-pairing" min="1" max="50" value="10" step="1">
+                                <div class="slider-minmax">
+                                    <div class="slider-min">1</div>
+                                    <div class="slider-max">10</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button id="start-tournament">Start</button>
+                            <button id="stop-tournament" disabled>Stop</button>
+                            <button id="reset-visualization">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Agent Pool Column -->
+                <div class="agent-pool-column" id="agent-pool-container">
+                    <!-- Strategy selection moved above agent pool -->
+                    <div class="strategy-selection-container">
+                        <div class="strategy-selection-header">Select Strategies</div>
+                        <div class="strategy-selection-row">
+                            <div class="strategy-group">
+                                <div class="strategy-header">
+                                    <select id="strategy1" aria-label="Strategy 1">
+                                        <option value="" disabled selected>Strategy 1</option>
+                                        <option value="cooperator">Cooperator: Always cooperates</option>
+                                        <option value="defector">Defector: Always defects</option>
+                                        <option value="random">Random: Randomly cooperates or defects</option>
+                                        <option value="tit-for-tat">Tit for Tat: Copies opponent's previous move</option>
+                                        <option value="grudger">Grudger: Cooperates until defected against</option>
+                                        <option value="detective">Detective: Tests then adapts</option>
+                                        <option value="pavlov">Pavlov: Win-Stay, Lose-Shift</option>
+                                    </select>
+                                    <div class="color-indicator strategy1-color"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="strategy-group">
+                                <div class="strategy-header">
+                                    <select id="strategy2" aria-label="Strategy 2">
+                                        <option value="" disabled selected>Strategy 2</option>
+                                        <option value="cooperator">Cooperator: Always cooperates</option>
+                                        <option value="defector">Defector: Always defects</option>
+                                        <option value="random">Random: Randomly cooperates or defects</option>
+                                        <option value="tit-for-tat">Tit for Tat: Copies opponent's previous move</option>
+                                        <option value="grudger">Grudger: Cooperates until defected against</option>
+                                        <option value="detective">Detective: Tests then adapts</option>
+                                        <option value="pavlov">Pavlov: Win-Stay, Lose-Shift</option>
+                                    </select>
+                                    <div class="color-indicator strategy2-color"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="agent-pool-visualization">
+                        <!-- Added running indicator here at the bottom right -->
+                        <span id="running-indicator" class="hidden">
+                            <div class="spinner"></div>
+                            <span>Running...</span>
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Histogram Column -->
+                <div class="histogram-column" id="histogram-container"></div>
+            </div>
+        </div>
+
+        <div class="text-block">
+            <h2>The Prisoner's Dilemma</h2>
+            <p>
+                In the classic Prisoner's Dilemma, two individuals must decide whether to cooperate or defect. 
+                If both cooperate, they each receive a moderate reward. If both defect, they each receive a small punishment. 
+                If one cooperates and the other defects, the defector gets a large reward while the cooperator gets nothing.
+            </p>
+            <p>
+                This creates a paradox: while mutual cooperation would benefit both players more than mutual defection, 
+                the rational strategy for an individual is to defect, leading to a worse outcome for both.
+            </p>
+        </div>
+
+        <div class="text-block">
+            <h2>Strategies Explained</h2>
+            <p>This simulation includes several well-known strategies:</p>
+            <ul>
+                <li><strong>Cooperator:</strong> Always cooperates regardless of what the opponent does.</li>
+                <li><strong>Defector:</strong> Always defects regardless of what the opponent does.</li>
+                <li><strong>Tit for Tat:</strong> Starts by cooperating, then copies the opponent's previous move.</li>
+                <li><strong>Random:</strong> Randomly chooses to cooperate or defect with equal probability.</li>
+                <li><strong>Grudger:</strong> Cooperates until the opponent defects, then always defects.</li>
+                <li><strong>Detective:</strong> Starts with a specific sequence, then switches to Tit for Tat if the opponent ever defects, otherwise defects.</li>
+                <li><strong>Pavlov:</strong> Starts by cooperating, then changes strategy only when receiving a low payoff.</li>
+            </ul>
+        </div>
+
+        <div class="text-block">
+            <h2>Simulation Mechanics</h2>
+            <p>
+                This simulation creates a population of agents using two selected strategies. The agents are paired randomly 
+                and play multiple rounds of the Prisoner's Dilemma, accumulating scores based on their interactions.
+            </p>
+            <p>
+                The visualization shows both the agents (the dots on the left) and the score distribution (the histogram on the right).
+                The size of each agent reflects its score: more successful agents appear larger.
+            </p>
+        </div>
+    </div>
+
+    <div id="more-stories-container"></div>
+        
+    <script src="assets/js/stories-carousel.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('more-stories.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('more-stories-container').innerHTML = html;
+                    // Initialize the carousel after the content is loaded
+                    if (typeof initStoryCarousel === 'function') {
+                        setTimeout(initStoryCarousel, 100);
+                    }
+                })
+                .catch(error => console.error('Error loading more-stories section:', error));
+        });
+    </script>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Raj Saha</p>
+            <p><a href="https://github.com/saha-raj/" target="_blank">Github</a> / <a
+                    href="https://www.linkedin.com/in/rajsahaphd/" target="_blank">LinkedIn</a></p>
+        </div>
+    </footer>
+
+        <!-- Load D3.js -->
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        
+        <!-- Load our JavaScript modules -->
+        <script src="js/strategies.js"></script>
+        <script src="js/game.js"></script>
+        <script src="js/tournament.js"></script>
+        <script src="js/visualization.js"></script>
+        <script src="js/main.js"></script>
+</body>
+</html> 

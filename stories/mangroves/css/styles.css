@@ -1,0 +1,1059 @@
+/* CSS Variables */
+:root {
+  /* Typography - Title Font Options */
+  /* --title-font: "DM Serif Text", serif;  */
+  
+  /* Sans-serif options for headings */
+  /* --title-font: "Inter", sans-serif; */
+  /* --title-font: "Outfit", sans-serif; */
+  /* --title-font: "Plus Jakarta Sans", sans-serif; */
+  
+  /* Serif options for headings */
+  /* --title-font: "Fraunces", serif; */
+  /* --title-font: "Newsreader", serif; */
+  /* --title-font: "Merriweather", serif; */
+  /* --title-font: "PT Serif", serif; */
+  
+  /* Typography - Body Font Options */
+  /* --body-font: "Noto Serif", serif;  */
+  
+  /* Body text options */
+  /* --body-font: "Source Serif Pro", serif; */
+  /* --body-font: "Literata", serif; */
+  /* --body-font: "Merriweather", serif; */
+  /* --body-font: "PT Serif", serif; */
+  
+  /* UI Font */
+  /* --ui-font: "Noto Sans", sans-serif; */
+  
+  /* Author Font */
+  /* --author-font: "Lato", sans-serif; */
+  
+  --title-font: "Noto Sans", sans-serif;
+  
+  /* Typography - Body Font Options */
+  --body-font: "Noto Sans", sans-serif;
+  
+  /* UI Font */
+  --ui-font: "Noto Sans", sans-serif;
+  
+  /* Author Font */
+  --author-font: "Lato", sans-serif;
+
+
+  /* Font sizes */
+  --base-font-size: 16px;
+  --h1-size: 2.5rem;
+  --h2-size: 1.6rem;
+  --h3-size: 1.3rem;
+  --h4-size: 1.1rem;
+  --body-size: 1rem;
+  --small-text: 0.9rem;
+  --author-size: 1rem;
+  
+  /* Colors */
+  --text-color: #333;
+  --background-color: #efefef;
+  --content-bg: #efefef;
+  --footer-bg: #f5f5f5;
+  --author-text: #6c757d;
+  --footer-text: #adb5bd;
+  --card-bg: white;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  
+  /* Layout */
+  --content-width: 800px;
+  --content-padding: 2rem 1rem;
+  --section-spacing: 3rem;
+}
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* overflow: hidden; */
+  background-color: var(--background-color);
+  font-family: var(--ui-font);
+  font-size: var(--base-font-size);
+  line-height: 1.5;
+  overflow-x: hidden;
+  min-height: 120vh;
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+  font-family: var(--title-font);
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: var(--h1-size);
+  margin-bottom: 1.5rem;
+  margin-top: 3rem;
+}
+
+h2 {
+  font-size: var(--h2-size);
+  margin-top: var(--section-spacing);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-size: var(--h3-size);
+  margin-bottom: 1.2rem;
+}
+
+h4 {
+  font-size: var(--h4-size);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+/* Remove any conflicting styles */
+h1.noto-serif, h2.noto-serif {
+  font-family: var(--title-font) !important;
+}
+
+
+p {
+  font-family: var(--body-font);
+  font-size: var(--body-size);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+/* Author styling */
+.author {
+  margin: 1rem 0 5rem 0;
+  font-family: var(--author-font);
+  font-style: normal;
+  font-weight: 400;
+  /* text-transform: uppercase; */
+  /* letter-spacing: 0.08em; */
+}
+
+.author p {
+  margin: 0;
+  font-family: var(--author-font);
+  color: var(--author-text);
+  font-size: var(--author-size);
+  margin-bottom: 4rem;
+  /* text-transform: uppercase; */
+}
+
+/* Navigation */
+.main-nav {
+  background: var(--card-bg);
+  box-shadow: 0 2px 4px var(--card-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-content {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-family: var(--title-font);
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.nav-links a {
+  margin-left: 2rem;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+/* Content */
+.content {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--content-padding);
+  background-color: var(--content-bg);
+  position: relative;
+  overflow: visible;
+}
+
+.section-divider {
+    border: 0;
+    height: 1px;
+    background-color: var(--footer-text);
+    opacity: 0.3;
+    margin: 4rem auto;
+    width: 100%;
+    max-width: var(--content-width);
+}
+
+/* More Stories section */
+.more-stories {
+  background: var(--background-color);
+  padding: var(--section-spacing) 0;
+  margin-top: 4rem;
+  width: 100%;
+}
+
+.more-stories .content {
+  max-width: 100%;
+  padding: 0 2rem;
+  background-color: transparent;
+}
+
+.stories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: start;
+}
+
+.story-card {
+  background: var(--card-bg);
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+  border: 1px solid #eaeaea;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.story-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  background-color: #000;
+}
+
+.story-card-content {
+  padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.story-card h4 {
+  font-size: var(--h4-size);
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.story-card p {
+  margin: 0;
+  font-size: var(--small-text);
+  color: var(--footer-text);
+}
+
+/* Center the "More Stories" heading */
+.more-stories h3 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Footer */
+.footer {
+  min-height: 20vh;
+  background-color: var(--footer-bg);
+  margin-top: 4rem;
+  padding: 2rem 0;
+}
+
+.footer .container {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 1rem;
+  color: var(--footer-text);
+}
+
+.footer p {
+  margin-bottom: 1rem;
+  color: var(--footer-text);
+  font-family: var(--ui-font);
+  font-size: 1rem;
+}
+
+.footer a {
+  color: var(--footer-text);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom-color 0.2s ease-in-out;
+}
+
+.footer a:hover {
+  border-bottom-color: var(--footer-text);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  :root {
+    --base-font-size: 16px;
+    --h1-size: 2rem;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+}
+
+/* Media queries */
+@media (min-width: 1200px) {
+  .article-image {
+    margin: 3rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .article-image {
+    margin: 1.5rem 0;
+  }
+  
+  .article-image .caption {
+    font-size: 0.8rem;
+  }
+}
+
+#visualization-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  transition: padding-bottom 0.6s ease-out;
+}
+
+.sequence-block.is-fullscreen #visualization-container {
+  height: 100vh;
+  padding-bottom: 0;
+}
+
+/* D3 specific styles */
+.main-svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.image-layer {
+  width: 100%;
+  height: 100%;
+}
+
+.coastline-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.coastline-path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.8);
+  stroke-width: 1.5;
+  pointer-events: none;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Overlay elements */
+.location-label {
+  fill: white;
+  font-size: 24px;
+  font-family: var(--ui-font);
+  transition: font-size 0.3s ease;
+}
+
+.year-label {
+  fill: white;
+  font-family: var(--ui-font);
+  font-size: 32px;
+  font-weight: bold;
+  opacity: 1;
+  transition: font-size 0.3s ease;
+  visibility: visible !important;
+  display: block !important;
+}
+
+.sequence-block.is-fullscreen .year-label {
+  font-size: 96px;
+  font-weight: bold;
+}
+
+.scroll-progress {
+  fill: rgba(255, 255, 255, 0.2);
+}
+
+.scroll-indicator {
+  fill: white;
+}
+
+/* Add these to your existing styles */
+.coastline-toggle .toggle-background {
+  fill: rgba(255, 255, 255, 0.1);
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 1;
+}
+
+.coastline-toggle .toggle-background.toggle-active {
+  fill: rgba(255, 255, 255, 0.2);
+  stroke: rgba(255, 255, 255, 0.5);
+}
+
+.coastline-toggle .toggle-text {
+  fill: white;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  user-select: none;
+}
+
+.coastline-toggle:hover .toggle-background {
+  fill: rgba(255, 255, 255, 0.15);
+}
+
+.sequence-block {
+  width: 100%;
+  position: relative;
+  margin: 2rem 0;
+  z-index: 1;
+}
+
+.sequence-container {
+  position: relative;
+  width: 100%;
+}
+
+#visualization-container {
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;  /* 16:9 aspect ratio */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fullscreen state */
+.sequence-block.is-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  background: black;
+  z-index: 1000;
+}
+
+.sequence-block.is-fullscreen #visualization-container {
+  height: 100vh;
+  padding-bottom: 0;
+}
+
+.nav-arrow {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 2.5rem;
+  cursor: pointer;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  display: none;
+  z-index: 1000;
+}
+
+.nav-up {
+  top: 20px;
+}
+
+.nav-down {
+  bottom: 20px;
+}
+
+.nav-arrow:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Show arrows on hover */
+.sequence-block.is-fullscreen:hover .nav-arrow {
+  opacity: 0.7;
+}
+
+.image-layer image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Add button styles */
+.expand-background {
+  fill: rgba(255, 255, 255, 0.1);
+  stroke: rgba(255, 255, 255, 0.3);
+}
+
+.expand-icon {
+  fill: none;
+  stroke: white;
+}
+
+.expand-button:hover .expand-background {
+  fill: rgba(255, 255, 255, 0.2);
+}
+
+/* Add these styles for the expand button */
+.expand-button {
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.expand-button:hover {
+  opacity: 1;
+}
+
+.expand-background {
+  fill: rgba(0, 0, 0, 0.5);
+  stroke: rgba(255, 255, 255, 0.3);
+}
+
+.expand-icon {
+  fill: none;
+  stroke: white;
+  stroke-width: 2;
+}
+
+/* Update the button icon based on state */
+.sequence-block.is-fullscreen .expand-icon {
+  d: path('M5,5 L15,5 L15,15 L5,15 Z M25,5 L35,5 L35,15 L25,15 Z M5,25 L15,25 L15,35 L5,35 Z M25,25 L35,25 L35,35 L25,35 Z');
+}
+
+.expand-collapse-toggle {
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+.expand-collapse-toggle:hover {
+  opacity: 1;
+}
+
+.expand-collapse-toggle .toggle-background {
+  fill: rgba(0, 0, 0, 0.4);
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 1;
+}
+
+.expand-collapse-toggle:hover .toggle-background {
+  fill: rgba(0, 0, 0, 0.6);
+}
+
+/* Much larger text in fullscreen mode */
+.sequence-block.is-fullscreen .location-label {
+  font-size: 48px;  /* Doubled from 24px */
+}
+
+.sequence-block.is-fullscreen .year-label {
+  font-size: 96px;
+  font-weight: bold;
+}
+
+.hint-text {
+  font-size: 14px;
+  font-family: var(--ui-font);
+  opacity: 0.8;
+  transition: font-size 0.3s ease;
+}
+
+/* Larger hint text in fullscreen mode */
+.sequence-block.is-fullscreen .hint-text {
+  font-size: 18px;
+}
+
+.expand-hint {
+  font-size: 14px;
+  font-family: var(--ui-font);
+  opacity: 0.8;
+}
+
+/* Hide in fullscreen mode */
+.sequence-block.is-fullscreen .expand-hint {
+  display: none;
+}
+
+.play-pause-toggle {
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+.play-pause-toggle:hover {
+  opacity: 1;
+}
+
+.play-pause-toggle .toggle-background {
+  fill: rgba(0, 0, 0, 0.4);
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 1;
+}
+
+.play-pause-toggle:hover .toggle-background {
+  fill: rgba(0, 0, 0, 0.6);
+}
+/* More Stories Section */
+.more-stories {
+    background: var(--background-color);
+    padding: var(--section-spacing) 0;
+    margin-top: 4rem;
+    width: 100%;
+}
+
+.section-divider {
+    border: 0;
+    height: 1px;
+    background-color: var(--footer-text);
+    opacity: 0.3;
+    margin: 4rem auto;
+    width: 100%;
+    max-width: var(--content-width);
+}
+
+.more-stories .content {
+    max-width: 100%;
+    padding: 0 2rem;
+    background-color: transparent;
+}
+
+.more-stories h3 {
+    font-family: var(--title-font);
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+}
+
+.stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: start;
+}
+
+/* Story Cards */
+.stories-track .story-card {
+    flex: 0 0 auto;
+    width: calc(33.333% - 20px);
+    /* Show 3 cards by default, with margins */
+    margin: 0 10px;
+    background: var(--card-bg);
+    border-radius: 8px !important;
+    overflow: visible;
+    /* Changed from hidden to visible */
+    box-shadow: none;
+    border: none !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform-origin: center center;
+    position: relative;
+    z-index: 1;
+}
+
+.stories-track .story-card:hover,
+.stories-track .story-card:focus,
+.stories-track .story-card:active {
+    border: none !important;
+    border-bottom: none !important;
+    text-decoration: none;
+    outline: none;
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    /* Bring hovered card to front */
+    border-radius: 8px !important;
+}
+
+/* Override any default link styles for story cards */
+a.story-card,
+a.story-card:hover,
+a.story-card:active,
+a.story-card:visited,
+a.story-card:focus {
+    border: none !important;
+    border-bottom: none !important;
+    text-decoration: none !important;
+}
+
+/* Story card content styling */
+.story-card-content {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--card-bg);
+    border-bottom-left-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+}
+
+.story-card h4 {
+    font-family: var(--title-font);
+    font-size: var(--h4-size);
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.story-card p {
+    margin: 0;
+    font-size: var(--small-text);
+    color: var(--footer-text);
+}
+
+.story-card:hover h4 {
+    color: #0077b6;
+}
+
+/* Story card media container with aspect ratio */
+.story-card-media {
+    position: relative;
+    width: 100%;
+    padding-top: 107.5%;
+    /* 1/0.93 ≈ 107.5% to create 0.93:1 ratio */
+    overflow: hidden;
+    /* Keep media content contained */
+    background-color: #fff;
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+    border: none !important;
+    border-bottom: none !important;
+    transition: none !important;
+}
+
+.story-card-media img,
+.story-card-media video {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    border: 0 !important;
+    border-bottom: 0 !important;
+    outline: 0 !important;
+    transition: none !important;
+    box-shadow: none !important;
+}
+
+/* Additional specific rule to override any hover borders on media elements */
+.stories-track .story-card:hover .story-card-media,
+.stories-track .story-card:focus .story-card-media,
+.stories-track .story-card:active .story-card-media {
+    border: none !important;
+    border-bottom: none !important;
+    outline: none !important;
+    transition: none !important;
+}
+
+.stories-track .story-card:hover .story-card-media img,
+.stories-track .story-card:hover .story-card-media video,
+.stories-track .story-card:focus .story-card-media img,
+.stories-track .story-card:focus .story-card-media video,
+.stories-track .story-card:active .story-card-media img,
+.stories-track .story-card:active .story-card-media video {
+    border: 0 !important;
+    border-bottom: 0 !important;
+    outline: 0 !important;
+    transition: none !important;
+    box-shadow: none !important;
+}
+
+/* Responsive adjustments */
+@media (min-width: 1100px) {
+    .story-card {
+        width: calc(25% - 20px);
+        /* Show 4 cards on large screens */
+        border-radius: 8px !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .story-card {
+        width: calc(50% - 20px);
+        /* Show 2 cards on medium screens */
+        border-radius: 8px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .story-card {
+        width: calc(100% - 20px);
+        /* Show 1 card on smaller screens */
+        border-radius: 8px !important;
+    }
+
+    .stories-carousel-container {
+        padding: 0 30px;
+    }
+}
+
+/* Stories Carousel */
+.stories-carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    /* Space for navigation buttons */
+}
+
+.stories-carousel {
+    width: 100%;
+    overflow: visible;
+    /* Allow cards to expand outside of container on hover */
+    position: relative;
+    padding: 10px 0 20px 0;
+    /* Add padding to accommodate transformed cards */
+}
+
+.stories-track {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+    padding: 10px 0;
+    /* Add padding to accommodate shadows */
+}
+
+.story-card:hover h4 {
+    color: #0070f3;
+}
+
+/* Navigation buttons */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: white;
+    border: 1px solid #eaeaea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s ease;
+    color: #666;
+}
+
+.carousel-nav:hover {
+    background-color: #f5f5f5;
+    /* color: #333; */
+}
+
+.carousel-nav.prev {
+    left: 0;
+}
+
+.carousel-nav.next {
+    right: 0;
+}
+
+/* Fix story card styling to remove hover border and ensure consistent rounded corners */
+a.story-card {
+    border-bottom: none;
+    border: none !important;
+}
+
+.stories-track a.story-card:hover {
+    border-bottom: none !important;
+    border-bottom-color: transparent;
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Completely remove any border from story card links */
+.stories-track a.story-card,
+.stories-track a.story-card:hover,
+.stories-track a.story-card:focus,
+.stories-track a.story-card:active {
+    border: none;
+    border-bottom: none;
+    text-decoration: none;
+    outline: none;
+}
+
+/* Ensure consistent rounded corners on all story cards, including when hovered */
+.stories-track .story-card {
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+.stories-track .story-card:hover {
+    border-radius: 8px !important;
+}
+
+/* Prevent any hover border on story card media */
+.story-card-media,
+.story-card-media img,
+.story-card-media video {
+    border: none !important;
+    outline: none !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    :root {
+        --base-font-size: 16px;
+        --h1-size: 2rem;
+    }
+}
+
+/* Override the default a:hover behavior specifically for story cards */
+.more-stories a:hover,
+.more-stories a:hover *,
+.more-stories a:hover *:before,
+.more-stories a:hover *:after {
+    border: none !important;
+    border-bottom: none !important;
+    border-color: transparent !important;
+    border-bottom-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+}
+
+/* Ultimate override for story card borders - added at the end to have maximum specificity */
+.story-card,
+.story-card *,
+.story-card:hover,
+.story-card:hover *,
+.stories-track .story-card,
+.stories-track .story-card *,
+.stories-track .story-card:hover,
+.stories-track .story-card:hover *,
+.story-card-media,
+.story-card-media *,
+.story-card-media img,
+.story-card-media video,
+.story-card:hover .story-card-media,
+.story-card:hover .story-card-media img,
+.story-card:hover .story-card-media video,
+.story-card::before,
+.story-card::after,
+.story-card *::before,
+.story-card *::after,
+.story-card:hover::before,
+.story-card:hover::after,
+.story-card:hover *::before,
+.story-card:hover *::after {
+    border: 0 none !important;
+    border-bottom: 0 none !important;
+    border-top: 0 none !important;
+    border-left: 0 none !important;
+    border-right: 0 none !important;
+    border-color: transparent !important;
+    border-style: none !important;
+    border-width: 0 !important;
+    outline: 0 none !important;
+}
+
+/* Prevent hover events on media elements */
+.story-card-media,
+.story-card-media img,
+.story-card-media video {
+    pointer-events: none !important;
+}
+
+/* Apply border radius only where needed */
+.story-card,
+.story-card:hover {
+    border-radius: 8px !important;
+}
+
+.story-card-media {
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+}
+
+.story-card-content {
+    border-bottom-left-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+}
+
+/* Ultimate video element reset - this overrides ALL browser styling for videos */
+video {
+    all: initial !important;
+    /* Reset all properties */
+    display: block !important;
+    /* Maintain block display */
+    position: absolute !important;
+    top: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    background-clip: padding-box !important;
+    /* Prevent background extending into border area */
+    -webkit-background-clip: padding-box !important;
+    border: 0 !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-color: transparent !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Video wrapper to isolate media elements */
+.video-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    border: 0 !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-color: transparent !important;
+    outline: 0 !important;
+}
+
+.video-wrapper * {
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    border: 0 !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-color: transparent !important;
+    outline: 0 !important;
+}

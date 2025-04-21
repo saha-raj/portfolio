@@ -1,0 +1,25 @@
+{
+    "locations": {
+        "location1": {
+            "name": "Noakhali District",
+            "description": "Brief description if needed",
+            "coordinates": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "location2": {
+            "name": "The Sundarbans Mangrove Forest",
+            "description": "Brief description if needed",
+            "coordinates": {
+                "x": 0,
+                "y": 0
+            }
+        }
+    },
+    "years": {
+        "start": 1984,
+        "end": 2020
+    },
+    "imageFormat": "webp"
+}

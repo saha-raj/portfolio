@@ -1,0 +1,55 @@
+three.module.js:1639 THREE.ColorManagement: .legacyMode=false renamed to .enabled=true in r150.
+set legacyMode @ three.module.js:1639
+(anonymous) @ index.js:24
+BackgroundManager.js:4 Background container: div#background-container
+index.js:37 Background Manager initialized: BackgroundManager {container: div#background-container, backgrounds: Map(0), currentBackground: null, currentProgress: 0}
+index.js:129 Plot creation: {id: 14, type: '3dObject'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: '', type: 'plot'}
+index.js:129 Plot creation: {id: '', type: 'plot'}
+index.js:129 Plot creation: {id: undefined, type: 'button'}
+index.js:129 Plot creation: {id: undefined, type: 'button'}
+ObjectFactory.js:184 Creating sim controls...
+ObjectFactory.js:285 Sim controls created: div.sim-controls.sim-controls-visibility
+index.js:129 Plot creation: {id: undefined, type: 'sim-controls'}
+PotentialPlot.js:33 Created element: true
+ObjectFactory.js:299 Plot element: div.plot-area
+ObjectFactory.js:300 Is Node: true
+index.js:129 Plot creation: {id: '', type: 'plot'}
+index.js:129 Plot creation: {id: '', type: 'plot'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:129 Plot creation: {id: undefined, type: 'text'}
+index.js:141 Initial values: {gValue: '0.327', tempValue: '292', hasSimControls: true, hasControls: true, hasSliders: true}
+index.js:156 Earth object: {hasEarth: true, hasExtras: true, hasIceGroup: true, simIceGroupVisible: false, hasCurrentSimulation: true}
+index.js:169 Ice calculation: {tempValue: '292', albedo: 0.2364024680438977, scale: 0.24182379100885842, currentSimulationExists: true, simIceGroup: Group, …}
+index.js:182 Ice visibility after setting: true
+index.js:186 Ice visibility after scaling: true

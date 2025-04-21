@@ -1,0 +1,838 @@
+/* CSS Variables */
+:root {
+    /* Typography - Title Font Options */
+    /* --title-font: "DM Serif Text", serif;  */
+
+    /* Sans-serif options for headings */
+    /* --title-font: "Inter", sans-serif; */
+    /* --title-font: "Outfit", sans-serif; */
+    /* --title-font: "Plus Jakarta Sans", sans-serif; */
+
+    /* Serif options for headings */
+    /* --title-font: "Fraunces", serif; */
+    /* --title-font: "Newsreader", serif; */
+    /* --title-font: "Merriweather", serif; */
+    /* --title-font: "PT Serif", serif; */
+
+    /* Typography - Body Font Options */
+    /* --body-font: "Noto Serif", serif;  */
+
+    /* Body text options */
+    /* --body-font: "Source Serif Pro", serif; */
+    /* --body-font: "Literata", serif; */
+    /* --body-font: "Merriweather", serif; */
+    /* --body-font: "PT Serif", serif; */
+
+    /* UI Font */
+    /* --ui-font: "Noto Sans", sans-serif; */
+
+    /* Author Font */
+    /* --author-font: "Lato", sans-serif; */
+
+    --title-font: "Noto Sans", sans-serif;
+
+    /* Typography - Body Font Options */
+    --body-font: "Noto Sans", sans-serif;
+
+    /* UI Font */
+    --ui-font: "Noto Sans", sans-serif;
+
+    /* Author Font */
+    --author-font: "Lato", sans-serif;
+
+
+    /* Font sizes */
+    --base-font-size: 16px;
+    --h1-size: 2.5rem;
+    --h2-size: 1.6rem;
+    --h3-size: 1.3rem;
+    --h4-size: 1.1rem;
+    --body-size: 1rem;
+    --small-text: 0.9rem;
+    --author-size: 1rem;
+
+    /* Colors */
+    --text-color: #333;
+    --background-color: #efefef;
+    --content-bg: #efefef;
+    --footer-bg: #f5f5f5;
+    --author-text: #6c757d;
+    --footer-text: #adb5bd;
+    --card-bg: white;
+    --card-shadow: rgba(0, 0, 0, 0.1);
+
+    /* Layout */
+    --content-width: 800px;
+    --content-padding: 2rem 1rem;
+    --section-spacing: 3rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /* font-family: 'Noto Sans', -apple-system, system-ui, sans-serif; */
+    font-family: var(--body-font);
+    /* font-family: 'PT Serif', Georgia, serif; */
+    line-height: 1.5;
+    overflow-x: hidden;
+    min-height: 120vh;
+    font-size: var(--base-font-size);
+    color: var(--text-color);
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    
+    /* font-family: 'Noto Sans', sans-serif; */
+    /* font-family: 'PT Serif', Georgia, serif; */
+    font-family: var(--title-font);
+    font-weight: 700;
+    font-size: var(--h1-size);
+    margin-bottom: 1rem;
+    margin-top: 3rem;
+    line-height: 1.2;
+}
+
+h2 {
+    /* font-family: 'PT Serif', Georgia, serif; */
+    font-family: var(--title-font);
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: var(--h2-size);
+}
+
+h3 {
+    font-family: var(--title-font);
+    font-size: var(--h3-size);
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    line-height: 1.2;
+}
+
+h4 {
+    font-family: var(--title-font);
+    font-size: var(--h4-size);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+p {
+    /* font-family: 'PT Serif', Georgia, serif; */
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: var(--body-size);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.content {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: var(--content-padding);
+    /* background-color: #edf2f4; */
+    background-color: var(--content-bg);
+    position: relative;
+    overflow: visible;
+}
+
+.sequence-block {
+    width:100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 2rem 0;
+    z-index: 1;
+    transition: transform 0.6s ease-out, opacity 0.6s ease-out;  /* Added transition */
+
+}
+
+.sequence-container {
+    position: relative;
+    width: 100%;
+}
+
+.sequence-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.sequence-block.is-active {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    margin: 0;
+}
+
+.sequence-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: #000;
+    transition: width 1s ease;
+}
+
+body.sequence-scrolling {
+    overflow: hidden;
+}
+
+/* Add styles for placeholder */
+.sequence-placeholder {
+    width: 75vw;
+    margin: 2rem 0;
+}
+
+/* Ensure content below sequence stays in position */
+.text-block {
+    position: relative;
+    z-index: 1;
+}
+
+.article-image {
+    margin: 2rem 0;
+    width: 100%;
+    max-width: var(--content-width);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.article-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+}
+
+/* .article-image .caption {
+    margin-top: 0.5rem;
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    font-style: italic;
+} */
+.article-image .caption {
+    font-family: var(--ui-font);
+    margin-top: 0;
+    text-align: left;
+    color: var(--caption-text);
+    font-size: var(--small-text);
+    /* font-style: italic; */
+    background-color: var(--caption-bg);
+    padding: 0.75rem;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+} 
+
+/* Special styling for chart container */
+.article-image.chart-container .caption {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+} 
+
+/* For larger screens */
+@media (min-width: 1200px) {
+    .article-image {
+        margin: 3rem auto;
+    }
+}
+
+/* For smaller screens */
+@media (max-width: 768px) {
+    .article-image {
+        margin: 1.5rem 0;
+    }
+    
+    .article-image .caption {
+        font-size: 0.8rem;
+    }
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom-color 0.2s ease-in-out;
+}
+
+a:hover:not(.story-card):not([class*="story-card"]) {
+    border-bottom-color: var(--link-color);
+}
+
+a:visited {
+    color: var(--link-color);
+}
+
+a:active {
+    color: var(--link-color);
+}
+
+.author {
+    margin: 1rem 0 5rem 0;
+    font-family: var(--author-font);
+    font-style: normal;
+    font-weight: 400;
+}
+
+.author p {
+    margin: 0;
+    font-family: var(--author-font);
+    color: var(--author-text);
+    font-size: var(--author-size);
+    margin-bottom: 4rem;
+}
+
+/* .footer {
+    min-height: 30vh;
+    background-color: #f5f5f5;
+    margin-top: 4rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-content {
+    text-align: center;
+    max-width: 600px;
+}
+
+.footer p {
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.footer a {
+    color: #2563eb;
+} */
+
+.footer {
+    min-height: 20vh;
+    font-family: var(--ui-font);
+    background-color: var(--footer-bg);
+    margin-top: 4rem;
+    padding: 2rem 0;
+}
+
+.footer .container {
+    max-width: var(--content-width);
+    margin: 0 auto;    /* Centers the container */
+    padding: 0 1rem;   /* Same padding as main content */
+    color: var(--footer-text);
+    font-family: var(--ui-font);
+}
+
+.footer p {
+    margin-bottom: 1rem;
+    color: var(--footer-text);
+    font-family: var(--ui-font);
+    font-size: 1rem;
+}
+
+.footer a {
+    color: var(--footer-text);
+    font-family: var(--ui-font);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom-color 0.2s ease-in-out;
+}
+
+.footer a:hover {
+    border-bottom-color: var(--footer-text);
+}
+
+/* More Stories Section */
+.more-stories {
+    background: var(--background-color);
+    padding: var(--section-spacing) 0;
+    margin-top: 4rem;
+    width: 100%;
+}
+
+.section-divider {
+    border: 0;
+    height: 1px;
+    background-color: var(--footer-text);
+    opacity: 0.3;
+    margin: 4rem auto;
+    width: 100%;
+    max-width: var(--content-width);
+}
+
+.more-stories .content {
+    max-width: 100%;
+    padding: 0 2rem;
+    background-color: transparent;
+}
+
+.more-stories h3 {
+    font-family: var(--title-font);
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+}
+
+.stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: start;
+}
+
+/* Story Cards */
+.stories-track .story-card {
+    flex: 0 0 auto;
+    width: calc(33.333% - 20px); /* Show 3 cards by default, with margins */
+    margin: 0 10px;
+    background: var(--card-bg);
+    border-radius: 8px !important;
+    overflow: visible; /* Changed from hidden to visible */
+    box-shadow: none;
+    border: none !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform-origin: center center;
+    position: relative;
+    z-index: 1;
+}
+
+.stories-track .story-card:hover,
+.stories-track .story-card:focus,
+.stories-track .story-card:active {
+    border: none !important;
+    border-bottom: none !important;
+    text-decoration: none;
+    outline: none;
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    z-index: 2; /* Bring hovered card to front */
+    border-radius: 8px !important;
+}
+
+/* Override any default link styles for story cards */
+a.story-card,
+a.story-card:hover,
+a.story-card:active,
+a.story-card:visited,
+a.story-card:focus {
+    border: none !important;
+    border-bottom: none !important;
+    text-decoration: none !important;
+}
+
+/* Story card content styling */
+.story-card-content {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--card-bg);
+    border-bottom-left-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+}
+
+.story-card h4 {
+    font-family: var(--title-font);
+    font-size: var(--h4-size);
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.story-card p {
+    margin: 0;
+    font-size: var(--small-text);
+    color: var(--footer-text);
+}
+
+.story-card:hover h4 {
+    color: #0077b6;
+}
+
+/* Story card media container with aspect ratio */
+.story-card-media {
+    position: relative;
+    width: 100%;
+    padding-top: 107.5%; /* 1/0.93 ≈ 107.5% to create 0.93:1 ratio */
+    overflow: hidden; /* Keep media content contained */
+    background-color: #fff;
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+    border: none !important;
+    border-bottom: none !important;
+    transition: none !important;
+}
+
+.story-card-media img,
+.story-card-media video {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    border: 0 !important;
+    border-bottom: 0 !important;
+    outline: 0 !important;
+    transition: none !important;
+    box-shadow: none !important;
+}
+
+/* Additional specific rule to override any hover borders on media elements */
+.stories-track .story-card:hover .story-card-media,
+.stories-track .story-card:focus .story-card-media,
+.stories-track .story-card:active .story-card-media {
+    border: none !important;
+    border-bottom: none !important;
+    outline: none !important;
+    transition: none !important;
+}
+
+.stories-track .story-card:hover .story-card-media img,
+.stories-track .story-card:hover .story-card-media video,
+.stories-track .story-card:focus .story-card-media img,
+.stories-track .story-card:focus .story-card-media video,
+.stories-track .story-card:active .story-card-media img,
+.stories-track .story-card:active .story-card-media video {
+    border: 0 !important;
+    border-bottom: 0 !important;
+    outline: 0 !important;
+    transition: none !important;
+    box-shadow: none !important;
+}
+
+/* Responsive adjustments */
+@media (min-width: 1100px) {
+    .story-card {
+        width: calc(25% - 20px); /* Show 4 cards on large screens */
+        border-radius: 8px !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .story-card {
+        width: calc(50% - 20px); /* Show 2 cards on medium screens */
+        border-radius: 8px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .story-card {
+        width: calc(100% - 20px); /* Show 1 card on smaller screens */
+        border-radius: 8px !important;
+    }
+    
+    .stories-carousel-container {
+        padding: 0 30px;
+    }
+}
+
+/* D3.js Chart Styles */
+#lake-area-chart {
+    width: 100%;
+    height: 600px;
+    margin: 2rem 0;
+    background-color: transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.x-axis path,
+.y-axis path {
+    stroke: #999;
+    stroke-width: 1;
+}
+
+.x-axis line,
+.y-axis line {
+    stroke: #ddd;
+    stroke-width: 1;
+}
+
+.x-axis text,
+.y-axis text {
+    font-family: var(--ui-font);
+    font-size: 14px;
+    fill: #666;
+}
+
+.year-display {
+    font-family: var(--ui-font) !important;
+    font-size: 64px;
+    font-weight: 700;
+    fill: rgba(0, 0, 0, 0.15);
+}
+
+.line {
+    stroke: #444;
+    stroke-width: 3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #lake-area-chart {
+        height: 500px;
+    }
+    
+    .year-display {
+        font-size: 48px;
+    }
+}
+
+/* Stories Carousel */
+.stories-carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px; /* Space for navigation buttons */
+}
+
+.stories-carousel {
+    width: 100%;
+    overflow: visible; /* Allow cards to expand outside of container on hover */
+    position: relative;
+    padding: 10px 0 20px 0; /* Add padding to accommodate transformed cards */
+}
+
+.stories-track {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+    padding: 10px 0; /* Add padding to accommodate shadows */
+}
+
+.story-card:hover h4 {
+    color: #0070f3;
+}
+
+/* Navigation buttons */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: white;
+    border: 1px solid #eaeaea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s ease;
+    color: #666;
+}
+
+.carousel-nav:hover {
+    background-color: #f5f5f5;
+    /* color: #333; */
+}
+
+.carousel-nav.prev {
+    left: 0;
+}
+
+.carousel-nav.next {
+    right: 0;
+}
+
+/* Fix story card styling to remove hover border and ensure consistent rounded corners */
+a.story-card {
+    border-bottom: none;
+    border: none !important;
+}
+
+.stories-track a.story-card:hover {
+    border-bottom: none !important;
+    border-bottom-color: transparent;
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Completely remove any border from story card links */
+.stories-track a.story-card,
+.stories-track a.story-card:hover,
+.stories-track a.story-card:focus,
+.stories-track a.story-card:active {
+    border: none;
+    border-bottom: none;
+    text-decoration: none;
+    outline: none;
+}
+
+/* Ensure consistent rounded corners on all story cards, including when hovered */
+.stories-track .story-card {
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+.stories-track .story-card:hover {
+    border-radius: 8px !important;
+}
+
+/* Prevent any hover border on story card media */
+.story-card-media,
+.story-card-media img,
+.story-card-media video {
+    border: none !important;
+    outline: none !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    :root {
+        --base-font-size: 16px;
+        --h1-size: 2rem;
+    }
+}
+
+/* Override the default a:hover behavior specifically for story cards */
+.more-stories a:hover,
+.more-stories a:hover *,
+.more-stories a:hover *:before,
+.more-stories a:hover *:after {
+    border: none !important;
+    border-bottom: none !important;
+    border-color: transparent !important;
+    border-bottom-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+}
+
+/* Ultimate override for story card borders - added at the end to have maximum specificity */
+.story-card,
+.story-card *,
+.story-card:hover,
+.story-card:hover *,
+.stories-track .story-card,
+.stories-track .story-card *,
+.stories-track .story-card:hover,
+.stories-track .story-card:hover *,
+.story-card-media,
+.story-card-media *,
+.story-card-media img,
+.story-card-media video,
+.story-card:hover .story-card-media,
+.story-card:hover .story-card-media img,
+.story-card:hover .story-card-media video,
+.story-card::before,
+.story-card::after,
+.story-card *::before,
+.story-card *::after,
+.story-card:hover::before,
+.story-card:hover::after,
+.story-card:hover *::before,
+.story-card:hover *::after {
+    border: 0 none !important;
+    border-bottom: 0 none !important;
+    border-top: 0 none !important;
+    border-left: 0 none !important;
+    border-right: 0 none !important;
+    border-color: transparent !important;
+    border-style: none !important;
+    border-width: 0 !important;
+    outline: 0 none !important;
+}
+
+/* Prevent hover events on media elements */
+.story-card-media,
+.story-card-media img,
+.story-card-media video {
+    pointer-events: none !important;
+}
+
+/* Apply border radius only where needed */
+.story-card,
+.story-card:hover {
+    border-radius: 8px !important;
+}
+
+.story-card-media {
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+}
+
+.story-card-content {
+    border-bottom-left-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+}
+
+/* Ultimate video element reset - this overrides ALL browser styling for videos */
+video {
+    all: initial !important; /* Reset all properties */
+    display: block !important; /* Maintain block display */
+    position: absolute !important;
+    top: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    background-clip: padding-box !important; /* Prevent background extending into border area */
+    -webkit-background-clip: padding-box !important;
+    border: 0 !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-color: transparent !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Video wrapper to isolate media elements */
+.video-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    border: 0 !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-color: transparent !important;
+    outline: 0 !important;
+}
+
+.video-wrapper * {
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    border: 0 !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-color: transparent !important;
+    outline: 0 !important;
+}
+
+/* Apply border radius only where needed */

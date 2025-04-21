@@ -1,0 +1,7 @@
+_data/
+*.nc
+.DS_Store
+**/.DS_Store
+.DS_Store
+**/.DS_Store
+node_modules/.cache

@@ -61,25 +61,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Main Layout Logic ---
     console.log("About to call loadAndLayoutCards...");
-    loadAndLayoutCards();
-    console.log("Called loadAndLayoutCards.");
+    // loadAndLayoutCards(); // Initial call will be handled by hash logic
+    // console.log("Called loadAndLayoutCards."); // Initial call will be handled by hash logic
+
+    // --- Event Listeners for Filtering ---
+    window.addEventListener('hashchange', handleHashChange);
+    // Initial load handling
+    document.addEventListener('DOMContentLoaded', () => {
+        // Call handleHashChange on DOMContentLoaded AFTER initial card HTML might be loaded by loadAndLayoutCards
+        // This ensures that if loadAndLayoutCards is async and loads _cards.html,
+        // we attempt to filter after that HTML is in place.
+        // However, loadAndLayoutCards itself will be the main trigger for fetching & initial layout.
+        // The primary initial call path will be: DOMContentLoaded -> loadAndLayoutCards -> which then calls displayCardsForCategory.
+        console.log("DOMContentLoaded fully processed, initial loadAndLayoutCards was called.");
+        // No explicit call to handleHashChange here, loadAndLayoutCards will handle initial category via displayCardsForCategory
+    });
+
+    function handleHashChange() {
+        console.log("[HashChange] Hash changed to:", window.location.hash);
+        const category = parseCategoryFromHash(window.location.hash);
+        // We need to ensure cards are loaded before trying to display/filter them based on hash.
+        // The loadAndLayoutCards function will be the main entry point, which internally calls displayCardsForCategory.
+        // If cards are already loaded (e.g. mainElement.innerHTML is populated), we might re-trigger display.
+        // For simplicity now, let loadAndLayoutCards (triggered by resize or initial) handle category.
+        // If direct refresh on hash change is needed without full reload, displayCardsForCategory would be called here.
+        // This current setup implies that a hash change might visually update only after a subsequent resize/reload
+        // OR we modify loadAndLayoutCards to call displayCardsForCategory, which it will now do.
+        loadAndLayoutCards(); // Re-run the main layout logic which will pick up the new hash.
+    }
+
+    function parseCategoryFromHash(hash) {
+        if (hash.startsWith('#category=')) {
+            return decodeURIComponent(hash.substring(10)); // Length of "#category="
+        }
+        return null; // No category or empty
+    }
 
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
+        console.log("[Resize] Event fired. Debouncing..."); // Log: Resize event start
         resizeTimeout = setTimeout(() => {
-            console.log("--- Window resized, reloading cards --- RERUNNING LAYOUT");
-            loadAndLayoutCards();
+            console.log("--- Window resized (script-simple), RERUNNING LAYOUT --- "); // Log: Debounced call starting
+            loadAndLayoutCards(); // Re-run the whole process on resize
         }, 500);
     });
 
-    async function loadAndLayoutCards() {
-        console.log("Entered loadAndLayoutCards function.");
+    // This function will become the new core logic for fetching, filtering, and laying out cards.
+    async function displayCardsForCategory(category) {
+        console.log(`[Display-${Date.now()}] Attempting to display for category: "${category || 'All'}"`); // Log: displayCardsForCategory entry with timestamp
         if (!mainElement || !logoElement || !navElement || !footerElement || !footerCopyrightElement || !footerSocialIconsElement) {
-            console.error("Critical element(s) not found: main, logo, nav, footer, copyright, or social icons.");
+            console.error("Critical element(s) not found in displayCardsForCategory.");
             return;
         }
 
+        // Calculate dynamic pixel values (needed for layout)
         const viewportWidth = window.innerWidth;
         const viewportPaddingLeftPx = viewportWidth * VIEWPORT_PADDING_LEFT_FRACTION;
         const viewportPaddingRightPx = viewportWidth * VIEWPORT_PADDING_RIGHT_FRACTION;
@@ -88,62 +124,131 @@ document.addEventListener('DOMContentLoaded', () => {
         const actualHeaderTopBoundary = viewportPaddingTopPx;
         const cardLayoutTopBoundary = actualHeaderTopBoundary + headerHeightPx + HEADER_BOTTOM_PADDING_PX;
 
-        console.log(`Dynamic Values: vpPadL=${viewportPaddingLeftPx.toFixed(1)}, vpPadR=${viewportPaddingRightPx.toFixed(1)}, vpPadT=${viewportPaddingTopPx.toFixed(1)}, headerH=${headerHeightPx.toFixed(1)}, headerBottomPad=${HEADER_BOTTOM_PADDING_PX}, cardsTop=${cardLayoutTopBoundary.toFixed(1)}`);
-        
-        console.log(`[HeaderDebug] logoElement display: ${getComputedStyle(logoElement).display}`);
-        console.log(`[HeaderDebug] navElement display: ${getComputedStyle(navElement).display}`);
-
-        logoElement.style.left = `${viewportPaddingLeftPx}px`;
-        const logoHeight = logoElement.offsetHeight;
-        logoElement.style.top = `${actualHeaderTopBoundary + (headerHeightPx - logoHeight) / 2}px`;
-
-        navElement.style.right = `${viewportPaddingRightPx}px`;
-        const navHeight = navElement.offsetHeight;
-        navElement.style.top = `${actualHeaderTopBoundary + (headerHeightPx - navHeight) / 2}px`;
-
-        // --- Position Footer Elements ---
-        const footerAreaHeightPx = viewportWidth * FOOTER_AREA_HEIGHT_FRACTION;
-        // Footer itself is positioned by normal flow + JS-set height and margin-top (done in layoutCardsInGrid)
-        
-        // Copyright Text (left-aligned, vertically centered in footer area)
-        footerCopyrightElement.style.left = `${viewportPaddingLeftPx}px`;
-        const copyrightHeight = footerCopyrightElement.offsetHeight;
-        const copyrightTopPosition = (footerAreaHeightPx - copyrightHeight) / 2;
-        footerCopyrightElement.style.top = `${copyrightTopPosition}px`; // Relative to footer
-        // Note: For this to work with absolute positioning *inside* the footer, footer needs position:relative.
-
-        // Social Icons (right-aligned, vertically centered in footer area)
-        footerSocialIconsElement.style.right = `${viewportPaddingRightPx}px`;
-        const socialHeight = footerSocialIconsElement.offsetHeight;
-        const socialTopPosition = (footerAreaHeightPx - socialHeight) / 2;
-        footerSocialIconsElement.style.top = `${socialTopPosition}px`; // Relative to footer
+        // Position header and footer elements (this logic is independent of card content)
+        positionHeaderAndFooter(viewportWidth, viewportPaddingLeftPx, viewportPaddingRightPx, actualHeaderTopBoundary, headerHeightPx);
 
         try {
+            // Fetch and inject _cards.html content
+            // This ensures we always start with the full set of cards in the DOM before filtering.
             const response = await fetch(cardsHtmlPath);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const cardsHtml = await response.text();
-            mainElement.innerHTML = cardsHtml;
+            const cardsHtmlContent = await response.text();
+            mainElement.innerHTML = cardsHtmlContent;
             mainElement.style.position = 'relative';
+            console.log(`[Display-${Date.now()}] Injected _cards.html content into mainElement.`);
 
-            const loadedCardContainers = Array.from(mainElement.querySelectorAll('.card-container'));
-            console.log(`Found ${loadedCardContainers.length} card containers.`);
+            const allCardContainers = Array.from(mainElement.querySelectorAll('.card-container'));
+            console.log(`[Display-${Date.now()}] Found ${allCardContainers.length} total card containers from HTML.`);
 
-            if (loadedCardContainers.length > 0) {
+            let activeCardContainers = allCardContainers;
+            if (category) {
+                console.log(`[Display-${Date.now()}] Filtering for category: "${category}"`);
+                activeCardContainers = allCardContainers.filter(container => {
+                    const labelElement = container.querySelector('.card-label');
+                    return labelElement && labelElement.textContent.trim() === category;
+                });
+                console.log(`[Display-${Date.now()}] Found ${activeCardContainers.length} cards matching category: "${category}".`);
+            } else {
+                console.log(`[Display-${Date.now()}] No category specified, showing all ${allCardContainers.length} cards.`);
+            }
+            
+            // --- NEW: Explicitly hide inactive card containers and show active ones ---
+            allCardContainers.forEach(container => {
+                if (!activeCardContainers.includes(container)) {
+                    container.style.display = 'none'; 
+                } else {
+                    // Reset display for active containers so layoutCardsInGrid can manage them.
+                    // The .card-container itself doesn't have a display style in CSS, 
+                    // its children .story-card do. The container is primarily for grouping label + card.
+                    // It being in the DOM is enough. layoutCardsInGrid makes its children visible.
+                    container.style.display = ''; // Let it be default, or set to 'block' if preferred.
+                }
+            });
+            // --- END NEW ---
+            
+            // Attach click listeners to ALL labels AFTER _cards.html is injected and parsed
+            attachLabelClickListeners(allCardContainers);
+
+            if (activeCardContainers.length > 0) {
+                console.log(`[Display-${Date.now()}] Calling layoutCardsInGrid with ${activeCardContainers.length} active cards.`);
                 setTimeout(() => layoutCardsInGrid(
-                    loadedCardContainers,
+                    activeCardContainers,
                     mainElement, // layoutContainer
-                    viewportPaddingLeftPx,
-                    viewportPaddingRightPx,
+                    viewportPaddingLeftPx, 
+                    viewportPaddingRightPx, 
                     cardLayoutTopBoundary,
                     viewportWidth
-                ), 100);
+                ), 0); // Using 0ms timeout, just to push to end of event queue
             } else {
-                console.warn("No card containers selected, layout skipped.");
+                console.warn("[Display] No card containers to display after filtering.");
+                // Clear main content area if no cards match, or display a message
+                mainElement.style.height = '0px'; // Collapse main area
+                const footerEl = document.querySelector('footer');
+                if (footerEl) {
+                    const footerH = viewportWidth * FOOTER_AREA_HEIGHT_FRACTION;
+                    footerEl.style.height = `${footerH}px`;
+                    footerEl.style.marginTop = `${FOOTER_AREA_TOP_PADDING_PX}px`;
+                }
             }
         } catch (error) {
-            console.error('Error loading or processing cards:', error);
+            console.error('[Display] Error loading or processing cards for category:', error);
         }
     }
+
+    // Extracted header/footer positioning to a helper
+    function positionHeaderAndFooter(vpWidth, vpPadLeft, vpPadRight, actualHeaderTop, headerH) {
+        logoElement.style.left = `${vpPadLeft}px`;
+        const logoH = logoElement.offsetHeight;
+        logoElement.style.top = `${actualHeaderTop + (headerH - logoH) / 2}px`;
+
+        navElement.style.right = `${vpPadRight}px`;
+        const navH = navElement.offsetHeight;
+        navElement.style.top = `${actualHeaderTop + (headerH - navH) / 2}px`;
+        
+        const footerAreaH = vpWidth * FOOTER_AREA_HEIGHT_FRACTION;
+        footerCopyrightElement.style.left = `${vpPadLeft}px`;
+        const copyrightH = footerCopyrightElement.offsetHeight;
+        footerCopyrightElement.style.top = `${(footerAreaH - copyrightH) / 2}px`;
+
+        footerSocialIconsElement.style.right = `${vpPadRight}px`;
+        const socialH = footerSocialIconsElement.offsetHeight;
+        footerSocialIconsElement.style.top = `${(footerAreaH - socialH) / 2}px`;
+    }
+
+    function attachLabelClickListeners(cardContainers) {
+        cardContainers.forEach(container => {
+            const labelElement = container.querySelector('.card-label');
+            if (labelElement) {
+                // Remove old listener to prevent duplicates if re-attaching
+                labelElement.removeEventListener('click', handleLabelClick);
+                labelElement.addEventListener('click', handleLabelClick);
+                labelElement.style.cursor = 'pointer'; // Add visual cue
+            }
+        });
+    }
+
+    function handleLabelClick(event) {
+        const categoryName = event.target.textContent.trim();
+        console.log(`[LabelClick] Label clicked: "${categoryName}"`);
+        window.location.hash = 'category=' + encodeURIComponent(categoryName);
+        // The hashchange event will trigger loadAndLayoutCards -> displayCardsForCategory
+    }
+
+    let initialLoadCalled = false; // Guard to ensure loadAndLayoutCards via DOMContentLoaded runs once for initial setup
+
+    async function loadAndLayoutCards() {
+        const callTimestamp = Date.now(); // Timestamp for this call
+        console.log(`[LoadLayout-${callTimestamp}] loadAndLayoutCards called.`);
+        initialLoadCalled = true;
+
+        const category = parseCategoryFromHash(window.location.hash);
+        console.log(`[LoadLayout-${callTimestamp}] Parsed category from hash: "${category || 'All'}".`);
+        await displayCardsForCategory(category);
+        console.log(`[LoadLayout-${callTimestamp}] displayCardsForCategory finished.`);
+    }
+
+    // Initial Load - Call loadAndLayoutCards which now handles category from hash
+    loadAndLayoutCards(); 
 
     function layoutCardsInGrid(cardElements, layoutContainer, vpPadLeft, vpPadRight, cardsTopStart, vpWidth) {
         console.log(`--- Starting Grid Layout for ${cardElements.length} cards ---`);
@@ -248,9 +353,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let markerSvg = document.getElementById('corner-marker-svg');
         if (!markerSvg) {
              markerSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-             markerSvg.id = 'corner-marker-svg';
+             markerSvg.id = 'corner-marker-svg'; 
              Object.assign(markerSvg.style, {position: 'absolute', top: '0', left: '0', pointerEvents: 'none', zIndex: '9999'});
-             layoutContainer.appendChild(markerSvg);
+             layoutContainer.appendChild(markerSvg); 
         } else {
             while (markerSvg.firstChild) markerSvg.removeChild(markerSvg.firstChild);
         }
@@ -258,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
         markerSvg.style.height = `${svgHeight}px`;
         updateCornerDots(placedCardsForSizing, markerSvg); // Update dots for the cards placed by grid
 
-        // --- Place Labels ---
+        // --- Place Labels --- 
         console.log("Label placement call (was temporarily disabled)."); // Ensure this log is different or removed later
         setTimeout(() => {
             placeLabels(placedCardsForSizing); // Place labels for the cards placed by grid
@@ -305,7 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
             Object.assign(text.style, { visibility: 'hidden' }); // Dot labels are hidden
             text.setAttribute('x', (x + 7).toFixed(1));
             text.setAttribute('y', (y + 3).toFixed(1));
-            text.setAttribute('fill', 'black');
+            text.setAttribute('fill', 'black'); 
             text.setAttribute('stroke', 'white');
             text.setAttribute('stroke-width', '0.3');
             text.setAttribute('font-size', '10px');
@@ -323,17 +428,30 @@ document.addEventListener('DOMContentLoaded', () => {
             Object.assign(label.style, {
                 position: 'absolute',
                 zIndex: '100',
-                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                // backgroundColor: 'rgba(255, 255, 255, 0.9)',
                 padding: '2px 5px',
                 borderRadius: '3px',
                 fontSize: '15px',
-                fontWeight: 'normal',
+                fontWeight: '100',
                 // border: '1px solid #ccc',
                 display: 'block'
             });
             const labelHeight = label.offsetHeight;
-            label.style.left = '0px';
-            label.style.top = `-${labelHeight}px`;
+            
+            if (labelHeight === 0 && label.textContent.trim() !== '') {
+                console.warn(`[Labels] offsetHeight is 0 for visible label of card ${card.id}. Text: "${label.textContent}". Check CSS.`);
+            }
+
+            // Position the label RELATIVE TO ITS PARENT (.card-container)
+            const labelWidth = label.offsetWidth; // Get label width for right-alignment
+            
+            // card.width is FIXED_CARD_WIDTH (e.g., 290px from your last CSS change)
+            // If card.width isn't directly on the card object from the grid logic, use FIXED_CARD_WIDTH
+            const parentCardWidth = card.width || FIXED_CARD_WIDTH; // Ensure we have the card's actual width
+
+            label.style.left = `${parentCardWidth - labelWidth}px`; // Position label's left edge so its right edge aligns with parent's right edge
+            label.style.top = `-${labelHeight}px`; // Position label's top edge so its bottom aligns with parent's top edge
+            
             label.style.visibility = 'visible';
         });
     }

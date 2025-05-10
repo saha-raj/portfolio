@@ -200,6 +200,11 @@ body {
     /* Width/height/top/left will be set by JS */
 }
 
+/* Added to hide cards initially until JS positions them */
+body.js-loading .card-container {
+    visibility: hidden;
+}
+
 /* --- DEBUG: Border for main layout container --- */
 main {
     /* border: 3px dashed green;  */

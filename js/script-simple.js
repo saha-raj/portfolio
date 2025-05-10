@@ -245,6 +245,10 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`[LoadLayout-${callTimestamp}] Parsed category from hash: "${category || 'All'}".`);
         await displayCardsForCategory(category);
         console.log(`[LoadLayout-${callTimestamp}] displayCardsForCategory finished.`);
+
+        // Remove loading class once everything is done
+        document.body.classList.remove('js-loading');
+        console.log(`[LoadLayout-${callTimestamp}] js-loading class removed from body.`);
     }
 
     // Initial Load - Call loadAndLayoutCards which now handles category from hash

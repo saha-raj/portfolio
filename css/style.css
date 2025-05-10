@@ -4,7 +4,7 @@
     --body-font: "Noto Sans", sans-serif;
     --ui-font: "Noto Sans", sans-serif; /* Using Noto Sans for UI too */
     --author-font: "Lato", sans-serif;
-    --nav-font: "JetBrains Mono", monospace; /* CORRECTED: For labels/nav/footer */
+    --nav-font: "JetBrains Mono", monospace; /* CORRECTED: Ensure JetBrains Mono */
 }
 
 /* CSS styles will go here */ 
@@ -21,9 +21,11 @@ body {
     /* This defines the spacing of the dots (20px grid) */
     background-size: 20px 20px;
 
-    /* Ensure the body takes full viewport height */
+    /* Ensure the body takes full viewport height and enables flex for sticky footer */
     min-height: 100vh;
     margin: 0; /* Remove default body margin */
+    display: flex; /* ADDED for sticky footer */
+    flex-direction: column; /* ADDED for sticky footer */
 
     /* Make the body a positioning context for absolute children */
     position: relative;
@@ -92,6 +94,20 @@ body {
     text-decoration: none;
     color: #66748F; /* Example color, adjust as needed */
     font-size: 1em; /* Example size, adjust as needed */
+    transition: color 0.2s ease-in-out; /* Smooth color transition */
+}
+
+.header-nav a:hover {
+    color: #f08282; /* Hover color */
+}
+
+/* Style for an "active" header navigation link (JS would add/remove this class) */
+/* .header-nav a.active-nav-link { */ /* Old selector, to be replaced */
+.header-nav a.current-page-link {
+    color: #5D6983; /* Active color (current page) */
+    font-weight: 800;
+    /* font-weight: bold; /* Example: uncomment if you want current page link to be bold */
+    /* Add other active styles if needed */
 }
 
 .nav-separator {
@@ -115,7 +131,7 @@ body {
     flex-direction: column;
     width: 290px; /* UPDATED fixed width */
     height: 415px; /* UPDATED fixed total height */
-    border-radius: 0px 8px 8px 8px; /* Asymmetric border radius */
+    border-radius: 8px 0px 8px 8px; /* UPDATED Asymmetric: TL=8, TR=0, BR=8, BL=8 */
     /* border: 2px solid red; /* --- DEBUG BORDER --- */
     /* outline: 30px solid lightcoral; /* --- DEBUG CARD_PADDING --- */
 }
@@ -146,15 +162,19 @@ body {
 /* Styling for Card Labels */
 .card-label {
     font-family: var(--nav-font);
-    color: #415A78; /* Use a color from the SVG */
-    background-color: #f0f0f0; /* Match page background */
-    padding: 2px 6px;
-    border: 1px solid #ccc;
-    /* Positioning will be handled by JS later */
-    /* For now, make them absolute to remove from flow */
+    color: #5E7797; /* Use a color from the SVG */
+    /* background-color: #f0f0f0; Match page background */
+    /* padding: 2px 6px; */
+    /* border: 1px solid #ccc; */
     position: absolute;
     z-index: 11; /* Above cards */
     white-space: nowrap; /* Prevent wrapping */
+    cursor: pointer; /* Already set by JS, but good to have in CSS too */
+    transition: color 0.2s ease-in-out; /* Smooth color transition */
+}
+
+.card-label:hover {
+    color: #f08282; /* Hover color */
 }
 
 /* Styling for Card Headers (h4 in example, updated) */
@@ -185,6 +205,7 @@ main {
     /* border: 3px dashed green;  */
     /* The script uses CONTAINER_PADDING_TOP (80px) and CONTAINER_PADDING_SIDE (50px) *inside* this main element */
     position: relative; /* Ensure it's a positioning context if not already implicitly */
+    flex-grow: 1; /* ADDED for sticky footer - allows main to expand */
 }
 
 /* --- DEBUG: Visualization for no-go zones inside main --- */
@@ -236,6 +257,11 @@ footer {
     font-size: 0.9em;
     color: #7C88A2; /* UPDATED color */
     position: absolute; /* For JS positioning */
+    transition: color 0.2s ease-in-out; /* Smooth color transition */
+}
+
+.footer-copyright:hover {
+    color: #f08282; /* Hover color */
 }
 
 .footer-social-icons {
@@ -251,58 +277,82 @@ footer {
     font-size: 0.9em; /* Match copyright size or adjust as needed */
     color: #7C88A2; /* UPDATED color */
     text-decoration: none; /* For links */
+    transition: color 0.2s ease-in-out; /* Smooth color transition for links */
 }
 
 .footer-social-icons a:hover {
     text-decoration: underline; /* Optional: hover effect for links */
+    color: #f08282; /* Hover color */
 }
 
 .footer-social-icons span.social-separator {
     margin-left: 10px; /* Space around separator */
     margin-right: 10px; /* Space around separator */
+    /* No hover color change needed for separator typically */
+    transition: none; /* No transition for separator */
 }
 
 /* Old .footer-social-icons span rule to be removed or merged if it was just for placeholders */
 /* .footer-social-icons span { ... } */
 
-/* --- DEBUG: Border for main layout container --- */
-main {
-    /* border: 3px dashed green;  */
-    /* The script uses CONTAINER_PADDING_TOP (80px) and CONTAINER_PADDING_SIDE (50px) *inside* this main element */
-    position: relative; /* Ensure it's a positioning context if not already implicitly */
-}
-
-/* --- DEBUG: Visualization for no-go zones inside main --- */
-.debug-no-go-zone {
-    position: absolute;
-    background-color: rgba(255, 165, 0, 0.2); /* Semi-transparent orange, lightened */
-    z-index: 4; /* Below cards and their outlines, above main bg */
-    pointer-events: none; /* So they don't interfere with clicks */
-}
-
-.debug-no-go-top {
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 150px; /* From layoutConfig.CONTAINER_PADDING_TOP */
-}
-
-.debug-no-go-left {
-    top: 80px; /* Start below the top no-go zone */
-    left: 0;
-    bottom: 0;
-    width: 50px; /* From layoutConfig.CONTAINER_PADDING_SIDE */
-}
-
-.debug-no-go-right {
-    top: 80px; /* Start below the top no-go zone */
-    right: 0;
-    bottom: 0;
-    width: 50px; /* From layoutConfig.CONTAINER_PADDING_SIDE */
-}
-
 /* Remove underline from card links */
 .card-link,
 .card-link:hover {
     text-decoration: none;
+}
+
+/* Styles for Process Page Content */
+.process-content-container {
+    font-family: var(--body-font); /* CHANGED from --nav-font to match card body text */
+    font-size: 1.1em;
+    color: #656767; /* Default text color, adjust as needed */
+    padding-top: 0; /* mainElement's paddingTop now defines space from header */
+    padding-bottom: 2rem; /* Space at the bottom of this content block */
+    padding-left: 0; /* Horizontal space is now managed by mainElement's padding */
+    padding-right: 0; /* Horizontal space is now managed by mainElement's padding */
+    max-width: 800px; /* Max width for readability of the text block itself */
+    /* margin-left: auto; /* REMOVED for left alignment */
+    /* margin-right: auto; /* REMOVED for left alignment */
+    margin-top: 0; /* Space from header is on mainElement.style.paddingTop */
+    margin-bottom: 2rem; /* Space above the footer */
+    /* This block will now be left-aligned within the padding of mainElement */
+}
+
+.process-section {
+    margin-bottom: 2.5rem; /* Space between sections */
+}
+
+.process-content-container .section-title { /* More specific selector */
+    font-family: var(--title-font); /* Match card title font */
+    font-size: 1.4em;
+    color: #656767; 
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+.process-content-container .skill-list {
+    list-style-type: disc;
+    padding-left: 25px; /* Standard indent for disc bullets */
+    line-height: 1.7;
+    /* Color is inherited from .process-content-container for text and bullets */
+}
+
+.process-content-container .skill-list li {
+    margin-bottom: 0.85rem;
+    /* Ensure li itself doesn't override the inherited color for bullets */
+}
+
+.process-content-container .nested-list {
+    /* list-style-type: none; /* REMOVED - to allow bullets */
+    list-style-type: circle; /* CHANGED - to show circle bullets for nested items */
+    padding-left: 25px; /* Indent for nested list, consistent with parent */
+    margin-top: 0.75rem; /* Space above nested list */
+    margin-bottom: 0.75rem; /* Space below nested list */
+    /* Color will be inherited for text and bullets */
+}
+
+.process-content-container .nested-list li {
+    margin-bottom: 0.5rem; 
+    font-size: 0.95em;
 } 

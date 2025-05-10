@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raj Saha | Portfolio</title>
+    <!-- Import Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <!-- Link to Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header/Logo Area -->
+    <header>
+        <!-- Text Logo -->
+        <div class="text-logo logo-svg"><span class="logo-name-raj">raj</span><br>SAHA</div>
+        <!-- Navigation Links -->
+        <nav class="header-nav">
+            <ul>
+                <li><a href="index.html">portfolio</a></li>
+                <li><span class="nav-separator">/</span></li>
+                <li><a href="process.html" class="current-page-link">how i build stories</a></li>
+                <li><span class="nav-separator">/</span></li>
+                <li><a href="#">about</a></li>
+            </ul>
+        </nav>
+        <!-- "Who We Are" card will go here -->
+
+    </header>
+
+    <!-- SVG Layer for drawing connection lines -->
+    <svg id="connecting-lines-svg" width="100%" height="100%" style="position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none;"></svg>
+
+    <!-- Main content area for dynamic story cards -->
+    <main>
+        <div class="process-content-container">
+            <div class="process-section">
+                <h3 class="section-title">The Story</h3>
+                <ul class="skill-list">
+                    <li>The seed idea of a visual story usually emerges from a question pertaining to an already important news context. It could be about a missing piece, or an extrapolation into the future, or about gaining understanding of something complex.</li>
+                    <li>But not all interesting questions are newsworthy. Some factors to consider in distinguishing them:
+                        <ul class="nested-list">
+                            <li>Time relevance</li>
+                            <li>Public interest vs reader curiosity</li>
+                            <li>Marginal gain above peer publications</li>
+                        </ul>
+                    </li>
+                    <li>Iterate through the story components to find the core idea. Build the story around that anchor point - the one idea I would want the reader to take away, if nothing else.</li>
+                </ul>
+            </div>
+
+            <div class="process-section">
+                <h3 class="section-title">Design Philosophy</h3>
+                <ul class="skill-list">
+                    <li>Does the visual need interaction? Minimize friction.</li>
+                    <li>Show everything that you want the reader to know.</li>
+                    <li>Visual hierarchy & Sequencing: Go to the main idea quickly, maybe to begin with.</li>
+                    <li>Layout choices should follow function: Consistent and minimal so things don't get in the way while adding context</li>
+                </ul>
+            </div>
+
+            <div class="process-section">
+                <h3 class="section-title">Data & Technology</h3>
+                <ul class="skill-list">
+                    <li>Can we use data and technology to show something that is otherwise not visible or captured through ground reporting</li>
+                    <li>Being thoughtful about building tools that can be used again in a similar context - framework</li>
+                    <li>Being mindful about if/what AI would be used for - to show the invisible? or to save labor+time? Any such tool must be designed to have full human oversight and the final say.</li>
+                    <li>Data availability. In some cases the lack of available data itself presents a journalistic duty to seek it out and build a story around it</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Area -->
+    <footer>
+        <div class="footer-copyright">
+            &copy; 2025 raj saha
+        </div>
+        <div class="footer-social-icons">
+            <a href="https://www.linkedin.com/in/rajsahaphd/" target="_blank">LinkedIn</a>
+            <span class="social-separator">/</span>
+            <a href="https://github.com/saha-raj" target="_blank">Github</a>
+        </div>
+    </footer>
+
+    <script src="js/script-regular.js"></script>
+</body>
+</html> 

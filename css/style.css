@@ -304,7 +304,7 @@ footer {
 /* Styles for Process Page Content */
 .process-content-container {
     font-family: var(--body-font); /* CHANGED from --nav-font to match card body text */
-    font-size: 1.1em;
+    font-size: 1.2em; /* UPDATED from 1.1em to make body text larger */
     color: #656767; /* Default text color, adjust as needed */
     padding-top: 0; /* mainElement's paddingTop now defines space from header */
     padding-bottom: 2rem; /* Space at the bottom of this content block */
@@ -331,15 +331,22 @@ footer {
     font-weight: 700;
 }
 
-.process-content-container .skill-list {
+.content p{
+    list-style-type: disc;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.process-content-container .content-list {
     list-style-type: disc;
     padding-left: 25px; /* Standard indent for disc bullets */
     line-height: 1.7;
     /* Color is inherited from .process-content-container for text and bullets */
 }
 
-.process-content-container .skill-list li {
+.process-content-container .content-list li {
     margin-bottom: 0.85rem;
+    font-size: 1em; /* UPDATED from 1rem to be relative to .process-content-container */
     /* Ensure li itself doesn't override the inherited color for bullets */
 }
 
@@ -354,5 +361,119 @@ footer {
 
 .process-content-container .nested-list li {
     margin-bottom: 0.5rem; 
-    font-size: 0.95em;
+    font-size: 1em; /* UPDATED from 1rem to be relative to .process-content-container */
+}
+
+/* About Page Specific Styles */
+.about-section { /* Added to .process-content-container on about.html */
+  /* padding: 3rem 0 5rem; -- OLD RULE */
+  /* padding-top is handled by .process-content-container (0) allowing main's JS padding to take effect */
+  /* padding-left/right are handled by .process-content-container (0) allowing main's JS padding to take effect */
+  padding-bottom: 5rem; /* Specific to about page for more space at the bottom */
+}
+
+.about-profile {
+  /* This class is primarily for semantic grouping of the "About Me" content within a .process-section div. */
+  /* User-provided flex styles are applied here to structure direct children of .about-profile. */
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* UPDATED from 1.5rem to match section-title margin-bottom */
+  /* margin-bottom: 1rem; /* .process-section handles the overall bottom margin */
+}
+
+/* ADDED rule to ensure gap in .about-profile is the sole source of space after title */
+.about-profile > .section-title {
+    margin-bottom: 0; /* Nullify h3's own margin so only parent's gap applies */
+}
+
+/* ADDED rule to reduce gap after "About Me" section */
+.about-profile.process-section {
+    margin-bottom: 1.5rem; /* REDUCED from 2.5rem (default for .process-section) */
+}
+
+.about-text p {
+  margin-bottom: 1.5rem;
+  color: #656767; /* Based on user's var(--color-body) */
+  font-size: 1em; /* UPDATED from 1rem to be relative to .process-content-container */
+  line-height: 1.7;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem; 
+  margin-top: 1.5rem; 
+}
+
+.skill-category h4,
+.art-design-item h4,
+.experience-header h4 {
+  font-family: var(--title-font);
+  font-size: 1.05em; /* UPDATED from 1.15em to make h4 smaller */
+  color: #656767; /* UPDATED from #4F5D75 to match h3 */
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+/* .content-list is an existing styled class */
+
+.art-design-list {
+  margin-top: 1.5rem; 
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* Increased gap for art items */
+}
+
+.art-list {
+  list-style-type: disc;
+  padding-left: 20px; 
+  line-height: 1.6;
+}
+
+.art-list li {
+  margin-bottom: 0.5rem;
+  font-size: 1em; /* UPDATED from 1rem to be relative to .process-content-container */
+}
+
+.art-project {
+  font-style: italic;
+}
+
+.experience-item {
+  /* User's original had no margin-top here, relying on parent section or previous item's margin */
+  /* Adding small gap between items if .process-section doesn't cover this */
+  padding-bottom: 1.5rem; 
+  margin-top: 1.5rem; /* Space between experience items */
+}
+
+.experience-item:first-of-type {
+    margin-top: 1.5rem; /* Ensure space after section title for the first item */
+}
+
+.experience-header {
+  margin-bottom: 0.75rem;
+}
+
+.experience-company {
+  font-family: var(--body-font);
+  font-size: 1em; /* UPDATED from 1rem to be relative to .process-content-container */
+  color: #7C88A2; 
+  margin-bottom: 0rem; /* UPDATED from 0.1rem to reduce gap */
+  line-height: 1.4;
+  font-weight: 600; 
+}
+
+.experience-period {
+  font-family: var(--body-font);
+  font-size: 1em; /* UPDATED from 1rem to be relative to .process-content-container */
+  color: #7C88A2; 
+  margin-bottom: 0.5rem; /* Space before duties */
+  line-height: 1.4;
+}
+
+.experience-duties {
+  list-style-type: disc;
+  padding-left: 20px;
+  line-height: 1.6;
+  font-size: 1em; /* UPDATED from 1rem to be relative to .process-content-container */
 } 

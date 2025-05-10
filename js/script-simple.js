@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Grid Configuration ---
     const MIN_CARD_GAP_PX = 60; // Minimum spacing between cards (horizontally and vertically)
     const VERTICAL_CARD_GAP_PX = 100; // New: Specific vertical gap
-    const FIXED_CARD_WIDTH = 265;
+    const FIXED_CARD_WIDTH = 295;
     const FIXED_CARD_HEIGHT = 415;
     
     // --- Old Configuration (to be reviewed/removed if fully unused) ---

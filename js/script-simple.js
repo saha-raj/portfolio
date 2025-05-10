@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("Layout Config (simplified for grid):", layoutConfig);
     
     const maxPlacementAttempts = 100; // May not be needed for simple grid
-    const cardsHtmlPath = '_cards.html';
+    const cardsHtmlPath = 'cards.html';
 
     // --- Element Selection ---
     const mainElement = document.querySelector('main');
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial load handling
     document.addEventListener('DOMContentLoaded', () => {
         // Call handleHashChange on DOMContentLoaded AFTER initial card HTML might be loaded by loadAndLayoutCards
-        // This ensures that if loadAndLayoutCards is async and loads _cards.html,
+        // This ensures that if loadAndLayoutCards is async and loads cards.html,
         // we attempt to filter after that HTML is in place.
         // However, loadAndLayoutCards itself will be the main trigger for fetching & initial layout.
         // The primary initial call path will be: DOMContentLoaded -> loadAndLayoutCards -> which then calls displayCardsForCategory.
@@ -128,14 +128,14 @@ document.addEventListener('DOMContentLoaded', () => {
         positionHeaderAndFooter(viewportWidth, viewportPaddingLeftPx, viewportPaddingRightPx, actualHeaderTopBoundary, headerHeightPx);
 
         try {
-            // Fetch and inject _cards.html content
+            // Fetch and inject cards.html content
             // This ensures we always start with the full set of cards in the DOM before filtering.
             const response = await fetch(cardsHtmlPath);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const cardsHtmlContent = await response.text();
             mainElement.innerHTML = cardsHtmlContent;
             mainElement.style.position = 'relative';
-            console.log(`[Display-${Date.now()}] Injected _cards.html content into mainElement.`);
+            console.log(`[Display-${Date.now()}] Injected cards.html content into mainElement.`);
 
             const allCardContainers = Array.from(mainElement.querySelectorAll('.card-container'));
             console.log(`[Display-${Date.now()}] Found ${allCardContainers.length} total card containers from HTML.`);
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             // --- END NEW ---
             
-            // Attach click listeners to ALL labels AFTER _cards.html is injected and parsed
+            // Attach click listeners to ALL labels AFTER cards.html is injected and parsed
             attachLabelClickListeners(allCardContainers);
 
             if (activeCardContainers.length > 0) {

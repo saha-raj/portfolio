@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // const viewportPadding = { ... }; // This seems unused, can be removed if confirmed later
     const maxPlacementAttempts = 100; // Prevent infinite loops
-    const cardsHtmlPath = '_cards.html'; // Path to the cards HTML file
+    const cardsHtmlPath = 'cards.html'; // Path to the cards HTML file
 
     // --- Element Selection ---
     const mainElement = document.querySelector('main');
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const cardsHtml = await response.text();
-            console.log("Fetched _cards.html content");
+            console.log("Fetched cards.html content");
             // --- DEBUG: Log the fetched HTML string (keep for now) ---
             console.log("--- Fetched HTML String START ---");
             console.log(cardsHtml);

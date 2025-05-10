@@ -113,7 +113,7 @@ body {
     overflow: hidden; /* Keep overflow hidden */
     display: flex;
     flex-direction: column;
-    width: 265px; /* UPDATED fixed width */
+    width: 290px; /* UPDATED fixed width */
     height: 415px; /* UPDATED fixed total height */
     border-radius: 0px 8px 8px 8px; /* Asymmetric border radius */
     /* border: 2px solid red; /* --- DEBUG BORDER --- */
@@ -132,7 +132,10 @@ body {
 
 /* Style for the content area within the card */
 .story-card-content {
-    padding: 1rem; /* Use rem for padding */
+    padding-left: 1.4rem; /* Use rem for padding */
+    padding-right: 1.4rem; /* Use rem for padding */
+    padding-top: 1rem; /* Use rem for padding */
+    padding-bottom: 1rem; /* Use rem for padding */
     height: 130px; /* UPDATED fixed height for text (415 - 285) */
     display: flex;
     flex-direction: column;
@@ -157,24 +160,17 @@ body {
 /* Styling for Card Headers (h4 in example, updated) */
 .story-card h4 {
     font-family: var(--title-font);
-    /* font-size: 1.1em; /* Example header size */
-    /* font-size: var(--h4-size); */ /* Use variable if defined, else fallback */
     font-size: 1.1em; /* Keep previous size for now */
-    /* margin-top: 0; */
-    /* margin-bottom: 8px; */
     margin: 0 0 0.5rem 0; /* Use rem margin from example */
-    color: #333;
+    color: #4F5D75; /* UPDATED color for h4 */
     font-weight: 600; /* Use font-weight from example */
 }
 
 /* Styling for Card Captions (p in example, updated) */
 .story-card p {
     font-family: var(--body-font);
-    /* font-size: 0.9em; /* Example caption size */
-    /* font-size: var(--small-text); */ /* Use variable if defined, else fallback */
     font-size: 0.9em; /* Keep previous size for now */
-    /* color: #666; */
-    color: var(--footer-text, #666); /* Use variable or default grey */
+    color: #AAB4C5; /* UPDATED color for p */
     margin: 0; /* Remove all margin */
 }
 
@@ -303,4 +299,10 @@ main {
     right: 0;
     bottom: 0;
     width: 50px; /* From layoutConfig.CONTAINER_PADDING_SIDE */
+}
+
+/* Remove underline from card links */
+.card-link,
+.card-link:hover {
+    text-decoration: none;
 } 

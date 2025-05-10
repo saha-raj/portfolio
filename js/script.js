@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isFixed = false; // Assume no cards loaded are inherently fixed anymore
             
             // --- USE FIXED DIMENSIONS --- 
-            const actualCardWidth = 265;
+            const actualCardWidth = 295;
             const actualCardHeight = 415;
 
             // Apply fixed width and height TEMPORARILY to the element for getBoundingClientRect() consistency
@@ -444,7 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function redistributeCardsHorizontally(cards, areaMinX, areaWidth, minVisualGapBetweenCards) {
         if (!cards || cards.length === 0) return [];
 
-        const actualCardWidth = 265; // Should be consistent with card.width after initial snapping if any
+        const actualCardWidth = 295; // Should be consistent with card.width after initial snapping if any
                                      // Or, more robustly, use card.width from the first card assuming all are same.
 
         // Group cards by Y position (rows)

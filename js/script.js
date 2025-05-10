@@ -5,38 +5,35 @@ console.log("--- script.js loaded ---"); // TEST LOG
 document.addEventListener('DOMContentLoaded', () => {
     console.log("--- DOMContentLoaded event fired ---"); // TEST LOG
 
+    // --- Fraction-based Layout Constants ---
+    const VIEWPORT_PADDING_LEFT_FRACTION = 0.05;  // 5% of viewport width
+    const VIEWPORT_PADDING_RIGHT_FRACTION = 0.05; // 5% of viewport width
+    const VIEWPORT_PADDING_TOP_FRACTION = 0.05;   // 5% of viewport width
+    const HEADER_HEIGHT_FRACTION = 0.10;          // 10% of viewport width
+
     // --- Configuration ---
     const gridSize = 20; // Must match the background-size in CSS
     const cardAspectRatio = 4 / 3; // Width / Height
-    const minCardWidth = 250;     // Minimum card width in px (Reduced slightly)
-    const maxCardWidth = 400;     // Maximum card width in px (Reduced slightly)
+    const minCardWidth = 200;     // Minimum card width in px (Reduced slightly)
+    const maxCardWidth = 350;     // Maximum card width in px (Reduced slightly)
     const baseCardWidthPercent = 10; // Base percentage of container width (Reduced slightly)
     
-    // --- NEW: Layout Configuration Object ---
     const layoutConfig = {
-        CONTAINER_PADDING_TOP: 80,  // Pixels from top edge of layout container
-        CONTAINER_PADDING_SIDE: 50, // Pixels from left/right edges of layout container
-        CARD_PADDING: 30,           // Pixels around each movable card
-        LOGO_PADDING: 30            // Pixels around the logo obstacle
+        // CONTAINER_PADDING_TOP: 80,  // Superseded by dynamic header height
+        // CONTAINER_PADDING_SIDE: 20, // Superseded by dynamic viewport paddings
+        CARD_PADDING: 50,           // Pixels around each movable card
+        LOGO_PADDING: 0             // Logo padding is now 0
     };
     console.log("Layout Config:", layoutConfig);
-    // --- END NEW ---
     
-    const viewportPadding = {
-        top: 40, // Pixels from top (Replaces percent)
-        right: 40,      // Pixels from right
-        bottom: 40,     // Pixels from bottom
-        left: 40        // Pixels from left
-    };
+    // const viewportPadding = { ... }; // This seems unused, can be removed if confirmed later
     const maxPlacementAttempts = 100; // Prevent infinite loops
     const cardsHtmlPath = '_cards.html'; // Path to the cards HTML file
 
     // --- Element Selection ---
     const mainElement = document.querySelector('main');
-    // Remove initial selection - will select after loading
-    // const cardContainers = Array.from(document.querySelectorAll('.card-container'));
-    const logoElement = document.querySelector('.logo-svg');
-    const whoWeAreCardElement = document.querySelector('#who-we-are-card');
+    const logoElement = document.querySelector('.text-logo'); // Changed from .logo-svg if still old
+    const navElement = document.querySelector('.header-nav'); // New nav element
 
     // --- Helper Functions ---
     // Rounds a value (Not used by BL algorithm, keep if needed elsewhere)
@@ -102,11 +99,41 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Load Cards and Initiate Layout --- //
     async function loadAndLayoutCards() {
         console.log("Entered loadAndLayoutCards function."); // TEST LOG
-        if (!mainElement) {
-            console.error("Main element not found!");
+        if (!mainElement || !logoElement || !navElement) {
+            console.error("Main, logo, or nav element not found!");
             return;
         }
-        // REMOVED containerElement check
+
+        // --- Calculate Dynamic Pixel Values ---
+        const viewportWidth = window.innerWidth;
+        const viewportPaddingLeftPx = viewportWidth * VIEWPORT_PADDING_LEFT_FRACTION;
+        const viewportPaddingRightPx = viewportWidth * VIEWPORT_PADDING_RIGHT_FRACTION;
+        const viewportPaddingTopPx = viewportWidth * VIEWPORT_PADDING_TOP_FRACTION;
+        const headerHeightPx = viewportWidth * HEADER_HEIGHT_FRACTION;
+        
+        const actualHeaderTopBoundary = viewportPaddingTopPx;
+        const cardLayoutTopBoundary = actualHeaderTopBoundary + headerHeightPx; // Cards start below this line
+
+        console.log(`Dynamic Values: vpPadL=${viewportPaddingLeftPx.toFixed(1)}, vpPadR=${viewportPaddingRightPx.toFixed(1)}, vpPadT=${viewportPaddingTopPx.toFixed(1)}, headerH=${headerHeightPx.toFixed(1)}, cardsTop=${cardLayoutTopBoundary.toFixed(1)}`);
+
+        // --- Position Header Elements ---
+        // Ensure elements are display:inline-block (or block) from CSS for offsetHeight to be reliable
+        console.log(`[HeaderDebug] logoElement display: ${getComputedStyle(logoElement).display}`);
+        console.log(`[HeaderDebug] navElement display: ${getComputedStyle(navElement).display}`);
+
+        // Logo
+        logoElement.style.left = `${viewportPaddingLeftPx}px`;
+        const logoHeight = logoElement.offsetHeight;
+        const logoTopPosition = actualHeaderTopBoundary + (headerHeightPx - logoHeight) / 2;
+        logoElement.style.top = `${logoTopPosition}px`;
+        console.log(`[HeaderDebug] Logo: offsetH=${logoHeight}, headerH=${headerHeightPx.toFixed(1)}, actualHeaderTop=${actualHeaderTopBoundary.toFixed(1)}, Calculated logoTop=${logoTopPosition.toFixed(1)}`);
+
+        // Nav
+        navElement.style.right = `${viewportPaddingRightPx}px`;
+        const navHeight = navElement.offsetHeight;
+        const navTopPosition = actualHeaderTopBoundary + (headerHeightPx - navHeight) / 2;
+        navElement.style.top = `${navTopPosition}px`;
+        console.log(`[HeaderDebug] Nav: offsetH=${navHeight}, headerH=${headerHeightPx.toFixed(1)}, actualHeaderTop=${actualHeaderTopBoundary.toFixed(1)}, Calculated navTop=${navTopPosition.toFixed(1)}`);
 
         try {
             const response = await fetch(cardsHtmlPath);
@@ -128,7 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("--- mainElement.innerHTML AFTER setting END ---");
             // --- END DEBUG ---
 
-            // REMOVED containerElement selection
             // --- Set mainElement as positioning context ---
             mainElement.style.position = 'relative'; 
             console.log("Set mainElement position to relative.");
@@ -138,8 +164,15 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(`Found ${loadedCardContainers.length} card containers after loading.`);
 
             if (loadedCardContainers.length > 0) {
-                // Use setTimeout to allow browser to render elements and calculate sizes
-                setTimeout(() => layoutCardsWithBottomLeft(loadedCardContainers, mainElement), 100); // Pass mainElement as container
+                // Pass new dynamic boundaries to layout function
+                setTimeout(() => layoutCardsWithTopRight(
+                    loadedCardContainers, 
+                    mainElement, 
+                    viewportPaddingLeftPx, 
+                    viewportPaddingRightPx, 
+                    cardLayoutTopBoundary, // This is the new top boundary for cards
+                    viewportWidth // Pass viewportWidth for right boundary calculation
+                ), 100);
             } else {
                 console.warn("No card containers selected, layout skipped.");
             }
@@ -149,46 +182,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Phase 1: Card Layout using Bottom-Left Heuristic --- //
-    function layoutCardsWithBottomLeft(cardElements, layoutContainer) { 
-        console.log(`--- Starting Bottom-Left Layout for ${cardElements.length} cards ---`);
+    // --- Phase 1: Card Layout using Top-Right Heuristic --- //
+    function layoutCardsWithTopRight(cardElements, layoutContainer, vpPadLeft, vpPadRight, cardsTopStart, vpWidth) { 
+        console.log(`--- Starting Top-Right Layout for ${cardElements.length} cards ---`);
 
         if (!layoutContainer || cardElements.length === 0) {
             console.warn("Layout container or card elements missing for layout.");
             return;
         }
 
-        // --- Get Layout Container Dimensions and Padding --- 
-        const containerRect = layoutContainer.getBoundingClientRect();
-        const p_top_space = layoutConfig.CONTAINER_PADDING_TOP;
-        const p_side_space = layoutConfig.CONTAINER_PADDING_SIDE;
-        const W_container = layoutContainer.clientWidth; 
-        const containerHeight = layoutContainer.clientHeight; // Get height too
+        const containerRect = layoutContainer.getBoundingClientRect(); // Still useful for relative positioning IF logo isn't child of body
+        // const p_top_space = layoutConfig.CONTAINER_PADDING_TOP; // Superseded
+        // const p_side_space = layoutConfig.CONTAINER_PADDING_SIDE; // Superseded
+        // const W_container = layoutContainer.clientWidth; // Superseded
 
-        console.log(`Layout Container: W=${W_container.toFixed(1)}, H=${containerHeight.toFixed(1)}`);
-        console.log(`Using Configured Padding: Top=${p_top_space.toFixed(1)}, Side=${p_side_space.toFixed(1)}`);
+        // New layout boundaries for cards
+        const cardAreaMinX = vpPadLeft;
+        const cardAreaMaxX = vpWidth - vpPadRight;
+        const cardAreaWidth = cardAreaMaxX - cardAreaMinX;
+        const cardAreaMinY = cardsTopStart;
 
-        // --- Identify Fixed Card Element --- 
-        const fixedCardElement = document.querySelector('#who-we-are-card'); 
+        console.log(`Card Layout Area: X=[${cardAreaMinX.toFixed(1)}, ${cardAreaMaxX.toFixed(1)}], W=${cardAreaWidth.toFixed(1)}, Y>=${cardAreaMinY.toFixed(1)}`);
+
         // --- Identify Logo Element --- (Needed for obstacle)
-        const logoElement = document.querySelector('.logo-svg');
+        // const logoElement = document.querySelector('.text-logo'); // Already selected globally
 
-        // --- Prepare Fixed Obstacles List (Logo + Fixed Card) --- 
-        const fixedObstacles = [];
+        // --- Prepare Fixed Obstacles List (Logo ONLY) --- 
+        const fixedObstacles = []; // Start with empty list
 
         // --- Prepare All Card Data (including calculating scaled sizes) --- 
         const allCardData = cardElements.map((element, index) => {
-            const isFixed = (element === fixedCardElement);
+            const isFixed = false; // Assume no cards loaded are inherently fixed anymore
             
-            // Calculate Scaled Size
-            const sizeScale = parseFloat(element.dataset.sizeScale) || 1;
-            const targetWidth = (W_container * baseCardWidthPercent / 100) * sizeScale;
-            const clampedWidth = Math.max(minCardWidth, Math.min(targetWidth, maxCardWidth));
-            const calculatedWidth = clampedWidth; // Use clamped width directly
+            // --- USE FIXED DIMENSIONS --- 
+            const actualCardWidth = 265;
+            const actualCardHeight = 415;
 
-            // Apply calculated width to element style TEMPORARILY for initial rect measurement
-            element.style.width = `${calculatedWidth}px`;
-            // Don't set temporary height
+            // Apply fixed width and height TEMPORARILY to the element for getBoundingClientRect() consistency
+            element.style.width = `${actualCardWidth}px`;
+            element.style.height = `${actualCardHeight}px`;
+            
+            // Apply other temporary styles needed for getBoundingClientRect() if it were for more than just initialX/Y
             element.style.position = 'absolute'; 
             element.style.visibility = 'hidden'; 
             element.style.display = 'block'; 
@@ -196,14 +230,17 @@ document.addEventListener('DOMContentLoaded', () => {
             element.style.left = '0px';
             element.style.margin = '0'; 
 
-            // Get bounding rect AFTER applying width and allowing content to flow
+            // Get bounding rect for initialX, initialY calculation. 
+            // rect.width and rect.height should now reflect the temporary 220x380 if CSS hasn't loaded, or confirm CSS if it has.
             const rect = element.getBoundingClientRect(); 
-            const measuredHeight = rect.height; // Get the ACTUAL measured height now
             
-            // --- NEW: Snap dimensions to grid --- 
-            const snappedWidth = Math.round(calculatedWidth / gridSize) * gridSize;
-            const snappedHeight = Math.round(measuredHeight / gridSize) * gridSize;
-            // --- END NEW ---
+            // For the layout algorithm, use the defined fixed dimensions, not potentially a measured one.
+            const calculatedWidthForSnapping = actualCardWidth;
+            const measuredHeightForSnapping = actualCardHeight;
+            
+            // --- Snap dimensions to grid --- 
+            const snappedWidth = Math.round(calculatedWidthForSnapping / gridSize) * gridSize;
+            const snappedHeight = Math.round(measuredHeightForSnapping / gridSize) * gridSize;
             
             // Calculate initial position relative to the layoutContainer's top-left corner
             const initialX = rect.left - containerRect.left;
@@ -226,8 +263,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // height: measuredHeight, // << CRITICAL FIX: Use MEASURED height from getBoundingClientRect to include content. DO NOT CHANGE BACK. >> -> Now using snappedHeight
                 p_card: layoutConfig.CARD_PADDING, 
                 fixed: isFixed,
-                pos: isFixed ? { x: initialX, y: initialY } : { x: null, y: null }, 
-                initial_pos_vis: { x: initialX, y: initialY }, 
+                pos: { x: null, y: null }, 
+                initial_pos_vis: { x: initialX, y: initialY  }, 
                 
                 // Effective dimensions and position getters/setters 
                 // These will now use the snapped width/height
@@ -260,98 +297,79 @@ document.addEventListener('DOMContentLoaded', () => {
             );
             // --- END DEBUG ---
 
-            // If this is the fixed card, add its data to fixedObstacles
-            if (isFixed) {
-                console.log(`Identified Fixed Card: ${card.id} at initial relative pos (${card.pos.x.toFixed(1)}, ${card.pos.y.toFixed(1)})`);
-                // Add structure expected by placeCardsBottomLeft 
-                const fixedCardObstacle = {
-                    id: card.id + " (fixed)",
-                    eff_pos: card.eff_pos, // Calculate effective pos based on initial pos
-                    eff_width: card.eff_width,
-                    eff_height: card.eff_height
-                };
-                 // --- DEBUG: Log fixed card obstacle data ---
-                if (fixedCardObstacle.eff_pos) {
-                    console.log(`  [Obstacle Prep] Fixed Card ${fixedCardObstacle.id}: ` +
-                                `EffPos=(${fixedCardObstacle.eff_pos.x.toFixed(1)}, ${fixedCardObstacle.eff_pos.y.toFixed(1)}) ` +
-                                `EffSize=(${fixedCardObstacle.eff_width.toFixed(1)}x${fixedCardObstacle.eff_height.toFixed(1)})`
-                    );
-                } else {
-                     console.warn(`  [Obstacle Prep] Fixed Card ${fixedCardObstacle.id} has NULL eff_pos initially.`);
-                }
-                // --- END DEBUG ---
-                fixedObstacles.push(fixedCardObstacle);
-               
-                // Make fixed card element visible immediately at its initial position
-                 element.style.left = `${card.pos.x}px`; 
-                 element.style.top = `${card.pos.y}px`;
-                 element.style.width = `${card.width}px`; // Ensure final size is set
-                 element.style.height = `${card.height}px`;
-                 element.style.visibility = 'visible'; 
-                 element.style.opacity = '1'; 
-            }
-
             return card;
         }).filter(data => data !== null);
 
         // --- Add Logo as a Fixed Obstacle --- 
         if (logoElement) {
-            const logoRect = logoElement.getBoundingClientRect();
-            const logoX = logoRect.left - containerRect.left;
-            const logoY = logoRect.top - containerRect.top;
-            const logoW = logoRect.width;
-            const logoH = logoRect.height;
+            // Get logo dimensions and its *actual current* position relative to the document
+            const logoGlobalRect = logoElement.getBoundingClientRect(); 
+            
+            // Convert logo's global position to be relative to the layoutContainer (mainElement)
+            // This is important if mainElement is not at (0,0) of the viewport (e.g. if body has margin)
+            const layoutContainerGlobalRect = layoutContainer.getBoundingClientRect();
+            const logoRelX = logoGlobalRect.left - layoutContainerGlobalRect.left;
+            const logoRelY = logoGlobalRect.top - layoutContainerGlobalRect.top;
 
-            if (logoW > 0 && logoH > 0) {
-                // Create an obstacle object for the logo
+            if (logoGlobalRect.width > 0 && logoGlobalRect.height > 0) {
                 const logoObstacle = {
-                    id: "logo-svg (fixed)",
-                    // Calculate effective position and dimensions for the logo obstacle
-                    eff_pos: { x: logoX - layoutConfig.LOGO_PADDING, y: logoY - layoutConfig.LOGO_PADDING },
-                    eff_width: logoW + 2 * layoutConfig.LOGO_PADDING,
-                    eff_height: logoH + 2 * layoutConfig.LOGO_PADDING
+                    id: "text-logo (fixed)",
+                    eff_pos: { x: logoRelX, y: logoRelY }, // Use relative X, Y with 0 padding
+                    eff_width: logoGlobalRect.width,         // Use actual width with 0 padding
+                    eff_height: logoGlobalRect.height        // Use actual height with 0 padding
                 };
-                // --- DEBUG: Log logo obstacle data ---
                 console.log(`  [Obstacle Prep] Logo ${logoObstacle.id}: ` +
-                            `EffPos=(${logoObstacle.eff_pos.x.toFixed(1)}, ${logoObstacle.eff_pos.y.toFixed(1)}) ` +
+                            `RelPos=(${logoObstacle.eff_pos.x.toFixed(1)}, ${logoObstacle.eff_pos.y.toFixed(1)}) ` +
                             `EffSize=(${logoObstacle.eff_width.toFixed(1)}x${logoObstacle.eff_height.toFixed(1)}) ` +
-                            `(using LOGO_PADDING: ${layoutConfig.LOGO_PADDING})` // Add note about padding used
+                            `(using 0 LOGO_PADDING)`
                 );
-                 // --- END DEBUG ---
                 fixedObstacles.push(logoObstacle);
-                // console.log(`Added Logo Obstacle: ...`); // Redundant log
             } else {
                  console.warn("Logo element found but has zero dimensions.");
             }
         }
 
-        const movableCards = allCardData.filter(card => !card.fixed);
+        const movableCards = allCardData;
 
         // --- Execute Placement Algorithm --- 
         console.log(`Running Top-Right Algorithm with ${fixedObstacles.length} fixed obstacles...`);
         const placementResult = placeCardsTopRight(
             movableCards,
-            fixedObstacles, // Pass the list of all fixed obstacles
-            W_container,    // Use container clientWidth
-            p_top_space,
-            p_side_space
+            fixedObstacles, 
+            cardAreaWidth,    // Pass the new cardAreaWidth
+            cardAreaMinY,     // Pass the new cardAreaMinY (top boundary for cards)
+            cardAreaMinX,     // Pass the new cardAreaMinX (left boundary for cards)
+            cardAreaMaxX      // Pass the new cardAreaMaxX (right boundary for cards)
         );
 
-        const placedCards = placementResult.placed; // These are the movable cards that were placed
+        let placedCards = placementResult.placed; 
         const unplacedCards = placementResult.unplaced;
-        console.log(`Placement complete. Placed Movable: ${placedCards.length}, Unplaced Movable: ${unplacedCards.length}`);
+        console.log(`Placement complete. Initial Placed: ${placedCards.length}, Unplaced: ${unplacedCards.length}`);
 
-        // --- NEW: Snap Placed Movable Card Positions to Grid --- 
-        const cardsToSnap = allCardData.filter(card => !card.fixed && card.pos && card.pos.x !== null);
+        // --- NEW: Redistribute cards horizontally for even spacing --- 
+        if (placedCards.length > 0) {
+            console.log("[Redistribute] Starting horizontal redistribution...");
+            placedCards = redistributeCardsHorizontally(
+                placedCards, 
+                cardAreaMinX, 
+                cardAreaWidth,
+                layoutConfig.CARD_PADDING // Pass this as a reference for minimum desired visual spacing
+            );
+            console.log("[Redistribute] Finished horizontal redistribution.");
+        }
+
+        // --- Snap Placed Card Positions to Grid --- 
+        // Filter for cards that were successfully placed AND have a position after redistribution
+        const cardsToSnap = placedCards.filter(card => card.pos && card.pos.x !== null);
         if (cardsToSnap.length > 0) {
-            console.log(`[Snapping] Snapping ${cardsToSnap.length} placed movable cards to grid (size: ${gridSize})...`);
+            console.log(`[Snapping] Snapping ${cardsToSnap.length} placed cards to grid (size: ${gridSize})...`);
             snapPositionsToGrid(cardsToSnap, gridSize);
         }
         // --- END NEW ---
 
         // --- Apply Final (Potentially Snapped) Positions and Sizes to Movable Cards --- 
         // This loop now applies the snapped positions for movable cards
-        movableCards.forEach(card => { // Iterate only over movable cards here
+        placedCards.forEach(card => { // Iterate only over placed cards here
             if (card.pos && card.pos.x !== null && card.pos.y !== null) {
                 card.element.style.left = `${card.pos.x}px`;
                 card.element.style.top = `${card.pos.y}px`;
@@ -368,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Calculate Max Y coordinate reached by placed cards --- 
         // This calculation should use the potentially snapped positions
         let maxY = 0;
-        const allPlacedOrFixedCardsForMaxY = allCardData.filter(card => card.pos && card.pos.x !== null);
+        const allPlacedOrFixedCardsForMaxY = placedCards.filter(card => card.pos && card.pos.x !== null);
         allPlacedOrFixedCardsForMaxY.forEach(card => {
             maxY = Math.max(maxY, card.pos.y + card.height);
         });
@@ -394,7 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         // Always update SVG size
-        markerSvg.style.width = `${W_container}px`;
+        markerSvg.style.width = `${vpWidth}px`;
         markerSvg.style.height = `${svgHeight}px`; // Use calculated max Y + buffer
         // --- DEBUG: Log SVG Canvas State ---
         const svgStyle = getComputedStyle(markerSvg);
@@ -406,7 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- END DEBUG ---
         
         // Combine placed movable cards and the original fixed card data for visualization
-        const allPlacedOrFixedCards = allCardData.filter(card => card.fixed || (card.pos && card.pos.x !== null));
+        const allPlacedOrFixedCards = placedCards.filter(card => card.fixed || (card.pos && card.pos.x !== null));
         console.log(`Updating corner dots for ${allPlacedOrFixedCards.length} cards immediately...`);
         updateCornerDots(allPlacedOrFixedCards, markerSvg); // Pass only cards and SVG target
 
@@ -417,19 +435,90 @@ document.addEventListener('DOMContentLoaded', () => {
         // }, 0);
         // Temporarily disable label placement to focus on corner dots
         console.log("Label placement temporarily disabled for debugging dots.");
+        setTimeout(() => { // RE-ACTIVATING this call for placeLabels
+            placeLabels(allPlacedOrFixedCards);
+        }, 15); // Slightly increased delay for DOM readiness, just in case.
     }
 
+    // --- NEW FUNCTION: Redistribute Cards Horizontally for Even Spacing ---
+    function redistributeCardsHorizontally(cards, areaMinX, areaWidth, minVisualGapBetweenCards) {
+        if (!cards || cards.length === 0) return [];
+
+        const actualCardWidth = 265; // Should be consistent with card.width after initial snapping if any
+                                     // Or, more robustly, use card.width from the first card assuming all are same.
+
+        // Group cards by Y position (rows)
+        const rows = {};
+        cards.forEach(card => {
+            const yPos = card.pos.y; // Assuming y is already determined and snapped if needed by prior steps
+            if (!rows[yPos]) {
+                rows[yPos] = [];
+            }
+            rows[yPos].push(card);
+        });
+
+        const redistributedCards = [];
+
+        console.log(`[Redistribute] Found ${Object.keys(rows).length} rows.`);
+
+        for (const yPos in rows) {
+            const rowCards = rows[yPos];
+            // Sort cards in the row by their current X position to maintain original left-to-right intent
+            rowCards.sort((a, b) => a.pos.x - b.pos.x);
+            
+            const numCardsInRow = rowCards.length;
+            console.log(`[Redistribute] Row at Y=${yPos} has ${numCardsInRow} cards.`);
+
+            if (numCardsInRow === 0) continue;
+
+            // Calculate total width of cards in the row
+            // Assuming all cards have the same width (snappedWidth from card object)
+            const cardWidthForRow = rowCards[0].width; // Use actual width of cards in this row
+            const totalCardWidth = numCardsInRow * cardWidthForRow;
+            const totalSpaceForGaps = areaWidth - totalCardWidth;
+
+            let currentX = areaMinX; // Start at the left boundary of the card area
+
+            if (numCardsInRow > 1) {
+                const evenGap = totalSpaceForGaps / (numCardsInRow - 1);
+                console.log(`[Redistribute] Row Y=${yPos}: areaW=${areaWidth.toFixed(1)}, totalCardW=${totalCardWidth.toFixed(1)}, totalGapSpace=${totalSpaceForGaps.toFixed(1)}, evenGap=${evenGap.toFixed(1)}`);
+
+                // Apply positions with even gaps
+                rowCards.forEach((card, index) => {
+                    card.pos.x = currentX;
+                    redistributedCards.push(card);
+                    currentX += cardWidthForRow + evenGap;
+                });
+            } else { // Single card in the row
+                // Center the single card within the areaWidth, or just place it at areaMinX?
+                // For now, place at areaMinX as per left-alignment bias of the original algorithm.
+                // If centering is desired: currentX = areaMinX + (areaWidth - cardWidthForRow) / 2;
+                rowCards[0].pos.x = areaMinX; 
+                console.log(`[Redistribute] Row Y=${yPos}: Single card, placed at X=${areaMinX.toFixed(1)}`);
+                redistributedCards.push(rowCards[0]);
+            }
+        }
+        return redistributedCards; // Return the array of cards with updated x positions
+    }
+    // --- END NEW FUNCTION ---
+
     // --- Top-Right Algorithm Implementation --- 
-    function placeCardsTopRight(movableCards, fixedObstacles, W, p_top, p_side) {
+    function placeCardsTopRight(movableCards, fixedObstacles, W_card_area, card_min_y, card_min_x, card_max_x) {
         const placed_movable_cards = []; // Tracks successfully placed movable cards
         const unplaced_movable_cards = [];
-        const min_x_bound = p_side;
-        const max_x_bound = W - p_side; // Use container width and padding
-        const min_y_bound = p_top;
-        const eff_W_space = max_x_bound - min_x_bound;
+        // const min_x_bound = p_side; // Superseded
+        // const max_x_bound = W - p_side; // Superseded
+        // const min_y_bound = p_top; // Superseded
+
+        const min_x_bound = card_min_x;
+        const max_x_bound = card_max_x;
+        const min_y_bound = card_min_y;
+        const eff_W_space = W_card_area; // This is the actual width available for cards
+
         const tolerance = 1e-9;
 
         console.log(`[TR Start] Placement Area Bounds: X=[${min_x_bound.toFixed(1)}, ${max_x_bound.toFixed(1)}], Y>=${min_y_bound.toFixed(1)}`);
+        console.log(`[TR Start] Effective Width for card placement: ${eff_W_space.toFixed(1)}`);
 
         // 1. Initialize placed list with all fixed obstacles
         const current_obstacles = [...fixedObstacles]; 
@@ -507,7 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // --- MODIFIED X-SCANNING LOGIC (Right-to-Left) ---
                 let x = max_x_bound - card_eff_w; // Start checking from the rightmost possible position
                 let iterations = 0; // Safety break for potential infinite loops
-                const maxIterations = W * 2; // Heuristic limit
+                const maxIterations = W_card_area * 2; // Heuristic limit
 
                 while (x >= min_x_bound - tolerance && iterations < maxIterations) {
                     iterations++;
@@ -725,6 +814,7 @@ document.addEventListener('DOMContentLoaded', () => {
         marker.setAttribute('fill', color);
         marker.setAttribute('stroke', 'white');
         marker.setAttribute('stroke-width', '1');
+        marker.setAttribute('visibility', 'hidden'); // HIDE THE DOT
         svgTarget.appendChild(marker);
         
         // Add a label if provided
@@ -737,6 +827,7 @@ document.addEventListener('DOMContentLoaded', () => {
             text.setAttribute('stroke-width', '0.3');
             text.setAttribute('font-size', '10px');
             text.setAttribute('font-family', 'sans-serif');
+            text.setAttribute('visibility', 'hidden'); // HIDE THE LABEL TEXT
             text.textContent = label;
             svgTarget.appendChild(text);
         }
@@ -748,42 +839,31 @@ document.addEventListener('DOMContentLoaded', () => {
         placedOrFixedCards.forEach(card => {
             const label = card.labelElement;
             // Ensure card has a position and a label element
-            if (!label || !card.pos || card.pos.x === null) return; 
+            if (!label || !card.pos || !card.pos.x === null || card.pos.y === null) return; 
 
-            // Place label above the card's final position
+            // Styles from user's current version of placeLabels
             label.style.position = 'absolute';
-            // Position relative to the layout container element
-            label.style.left = `${card.pos.x}px`;
-            label.style.top = `${card.pos.y - 25}px`; // Place 25px above the card top 
-            label.style.display = '';
-            label.style.visibility = 'visible';
             label.style.zIndex = '100'; // Ensure above cards
-            
-            // Simple label styling
             label.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
             label.style.padding = '2px 5px';
             label.style.borderRadius = '3px';
-            label.style.fontSize = '12px';
+            label.style.fontSize = '14px';
             label.style.fontWeight = 'normal';
             label.style.border = '1px solid #ccc';
+            // fontFamily and color should be picked up from CSS .card-label rule
+            // white-space: nowrap; should be picked up from CSS .card-label rule
+
+            // --- CRITICAL CHANGES FOR POSITIONING ---
+            label.style.display = 'block'; // Set display to block for reliable offsetHeight
+            const labelHeight = label.offsetHeight;
+            
+            label.style.left = '0px'; // Position X relative to the card container's top-left
+            label.style.top = `-${labelHeight}px`; // Position Y relative to card container, shifting up by label height
+            // --- END CRITICAL CHANGES ---
+            
+            label.style.visibility = 'visible';
+            // label.style.display = ''; // Removing this line, as display:block is fine.
         });
     }
-
-    // --- REMOVED OLD PHYSICS SIMULATION CODE ---
-    /*
-    // Function to apply forces (Repulsion, Boundary, Gravity)
-    function applyForces(cardData, fixedElementsRects, allowedArea, config) { ... REMOVED ... }
-    // Function to update card positions based on forces
-    function updatePositions(cardData, config) { ... REMOVED ... }
-    // Function to check if the system has stabilized
-    function checkStability(totalMovement, stableIterations, config) { ... REMOVED ... }
-    // Function to animate to final positions (might need adapting or removing if BL is instant)
-    function animateToFinalPositions() { ... REMOVED ... }
-    // The main simulation loop using requestAnimationFrame
-    let animationFrameId = null;
-    let iterationCount = 0;
-    let stableCounter = 0;
-    function simulationStep() { ... REMOVED ... }
-    */
 
 });

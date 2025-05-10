@@ -4,7 +4,7 @@
     --body-font: "Noto Sans", sans-serif;
     --ui-font: "Noto Sans", sans-serif; /* Using Noto Sans for UI too */
     --author-font: "Lato", sans-serif;
-    --nav-font: "JetBrains Mono", monospace; /* For labels/nav */
+    --nav-font: "JetBrains Mono", monospace; /* CORRECTED: For labels/nav/footer */
 }
 
 /* CSS styles will go here */ 
@@ -15,7 +15,7 @@ body {
     /* Create the dot pattern using radial gradient */
     /* A small grey dot (#aaa) of 1px radius */
     /* Transparent background around the dot */
-    background-image: radial-gradient(#aaa 1px, transparent 1px);
+    background-image: radial-gradient(#ced4da 1px, transparent 1px);
 
     /* Set the size of the repeating background pattern */
     /* This defines the spacing of the dots (20px grid) */
@@ -32,17 +32,74 @@ body {
 /* Style the SVG logo */
 .logo-svg {
     /* Set a fixed width to control the size */
-    width: 20%; /* Adjust as needed */
+    width: 25%; /* Adjust as needed */
     max-width: 350px;
     /* Position the logo absolutely */
     position: absolute;
 
     /* Position relative to the top-left corner using percentages */
     top: 10%;
-    left: 20%;
+    left: 10%;
 
     /* Ensure it's above other elements if needed */
     z-index: 10;
+}
+
+/* New Styling for Text Logo */
+.text-logo {
+    font-family: var(--nav-font); /* JetBrains Mono */
+    font-size: 2.5em; /* Example: Adjust as needed */
+    line-height: 1.2; /* Adjust for multi-line text */
+    color: #66748F; /* Example: Adjust as needed */
+    position: absolute; /* JS will set top/left */
+    z-index: 10;
+    display: inline-block; /* For offsetHeight measurement */
+    /* top: 10%; REMOVED */
+    /* left: 10%; REMOVED */
+    /* border: 2px solid blue; REMOVED --- DEBUG BORDER --- */
+    /* outline: 30px solid lightblue; REMOVED --- DEBUG LOGO_PADDING --- */
+}
+
+.logo-name-raj {
+    font-weight: 800; /* Extra bold for "raj" */
+}
+
+/* Styling for new Header Navigation */
+.header-nav {
+    position: absolute; /* JS will set top/right */
+    z-index: 10;
+    display: inline-block; /* For offsetHeight measurement */
+    color: #66748F;
+}
+
+.header-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Align links in a row */
+}
+
+.header-nav ul li {
+    margin-left: 20px; /* Spacing between links */
+}
+
+.header-nav ul li:first-child {
+    margin-left: 0;
+}
+
+.header-nav a {
+    font-family: var(--nav-font); /* UPDATED to JetBrains Mono */
+    text-decoration: none;
+    color: #66748F; /* Example color, adjust as needed */
+    font-size: 1em; /* Example size, adjust as needed */
+}
+
+.nav-separator {
+    font-family: var(--nav-font); /* Match link font */
+    color: #333; /* Match link color */
+    font-size: 1em; /* Match link size */
+    margin-left: 5px; /* Adjust spacing around separator as needed */
+    margin-right: 5px; /* Adjust spacing around separator as needed */
 }
 
 /* Basic Styling for all Story Cards (Updated based on example) */
@@ -54,20 +111,21 @@ body {
     /* padding: 15px; */ /* Remove old padding */
     box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Keep subtle shadow */
     overflow: hidden; /* Keep overflow hidden */
-    /* Add flexbox layout */
     display: flex;
     flex-direction: column;
-    height: auto; /* Adjust height automatically */
+    width: 265px; /* UPDATED fixed width */
+    height: 415px; /* UPDATED fixed total height */
+    border-radius: 0px 8px 8px 8px; /* Asymmetric border radius */
+    /* border: 2px solid red; /* --- DEBUG BORDER --- */
+    /* outline: 30px solid lightcoral; /* --- DEBUG CARD_PADDING --- */
 }
 
 /* Style images within cards (Updated based on example) */
 .story-card img,
 .story-card video {
-    /* max-width: 100%; */
     width: 100%; /* Ensure image/video takes full width */
-    height: auto; /* Maintain aspect ratio */
+    height: 285px; /* UPDATED fixed height for image */
     display: block; /* Keep block display */
-    /* margin-bottom: 10px; */ /* Remove old margin */
     object-fit: cover; /* Cover the area, potentially cropping */
     /* background-color: #000; */ /* Optional: background for loading/transparent images */
 }
@@ -75,21 +133,11 @@ body {
 /* Style for the content area within the card */
 .story-card-content {
     padding: 1rem; /* Use rem for padding */
-    flex-grow: 1; /* Allow content area to grow */
+    height: 130px; /* UPDATED fixed height for text (415 - 285) */
     display: flex;
     flex-direction: column;
-}
-
-/* Static position for the 'Who We Are' card */
-#who-we-are-card {
-    position: absolute;
-    /* Position it relative to the logo or top-left */
-    /* Example: below the logo, aligned left */
-    top: 25%; /* Adjust based on logo size/position */
-    left: 20%; /* Match logo's left position */
-    width: 250px; /* Example fixed width */
-    z-index: 9; /* Below logo if overlapping */
-    white-space: nowrap; /* Prevent wrapping */
+    box-sizing: border-box; /* Ensure padding is included in the fixed height */
+    overflow: hidden; /* Hide overflow if content is too tall for fixed height */
 }
 
 /* Styling for Card Labels */
@@ -134,4 +182,125 @@ body {
 .card-container {
     position: absolute; /* Needed for JS positioning */
     /* Width/height/top/left will be set by JS */
+}
+
+/* --- DEBUG: Border for main layout container --- */
+main {
+    /* border: 3px dashed green;  */
+    /* The script uses CONTAINER_PADDING_TOP (80px) and CONTAINER_PADDING_SIDE (50px) *inside* this main element */
+    position: relative; /* Ensure it's a positioning context if not already implicitly */
+}
+
+/* --- DEBUG: Visualization for no-go zones inside main --- */
+.debug-no-go-zone {
+    position: absolute;
+    background-color: rgba(255, 165, 0, 0.2); /* Semi-transparent orange, lightened */
+    z-index: 4; /* Below cards and their outlines, above main bg */
+    pointer-events: none; /* So they don't interfere with clicks */
+}
+
+.debug-no-go-top {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 150px; /* From layoutConfig.CONTAINER_PADDING_TOP */
+}
+
+.debug-no-go-left {
+    top: 80px; /* Start below the top no-go zone */
+    left: 0;
+    bottom: 0;
+    width: 50px; /* From layoutConfig.CONTAINER_PADDING_SIDE */
+}
+
+.debug-no-go-right {
+    top: 80px; /* Start below the top no-go zone */
+    right: 0;
+    bottom: 0;
+    width: 50px; /* From layoutConfig.CONTAINER_PADDING_SIDE */
+}
+
+/* Footer Styling */
+footer {
+    /* background-color: green; REMOVED */
+    width: 100%; /* Ensure it spans the full width */
+    /* Height will be set by JavaScript */
+    /* Margin-top will be set by JavaScript to create space above footer */
+    padding: 0; /* Reset default padding */
+    box-sizing: border-box;
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Vertically center content within footer (if JS doesn't override) */
+    /* Horizontal padding will be handled by JS positioning of internal divs if needed, or add here */
+    /* For example: padding-left: var(--calculated-vp-pad-left); padding-right: var(--calculated-vp-pad-right); if we use CSS vars */
+}
+
+.footer-copyright {
+    /* JS will set: position, left, top (for vertical centering) */
+    font-family: var(--nav-font); /* JetBrains Mono */
+    font-size: 0.9em;
+    color: #7C88A2; /* UPDATED color */
+    position: absolute; /* For JS positioning */
+}
+
+.footer-social-icons {
+    /* JS will set: position, right, top (for vertical centering) */
+    display: flex;
+    align-items: center;
+    position: absolute; /* For JS positioning */
+}
+
+.footer-social-icons a, 
+.footer-social-icons span.social-separator {
+    font-family: var(--nav-font); /* JetBrains Mono */
+    font-size: 0.9em; /* Match copyright size or adjust as needed */
+    color: #7C88A2; /* UPDATED color */
+    text-decoration: none; /* For links */
+}
+
+.footer-social-icons a:hover {
+    text-decoration: underline; /* Optional: hover effect for links */
+}
+
+.footer-social-icons span.social-separator {
+    margin-left: 10px; /* Space around separator */
+    margin-right: 10px; /* Space around separator */
+}
+
+/* Old .footer-social-icons span rule to be removed or merged if it was just for placeholders */
+/* .footer-social-icons span { ... } */
+
+/* --- DEBUG: Border for main layout container --- */
+main {
+    /* border: 3px dashed green;  */
+    /* The script uses CONTAINER_PADDING_TOP (80px) and CONTAINER_PADDING_SIDE (50px) *inside* this main element */
+    position: relative; /* Ensure it's a positioning context if not already implicitly */
+}
+
+/* --- DEBUG: Visualization for no-go zones inside main --- */
+.debug-no-go-zone {
+    position: absolute;
+    background-color: rgba(255, 165, 0, 0.2); /* Semi-transparent orange, lightened */
+    z-index: 4; /* Below cards and their outlines, above main bg */
+    pointer-events: none; /* So they don't interfere with clicks */
+}
+
+.debug-no-go-top {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 150px; /* From layoutConfig.CONTAINER_PADDING_TOP */
+}
+
+.debug-no-go-left {
+    top: 80px; /* Start below the top no-go zone */
+    left: 0;
+    bottom: 0;
+    width: 50px; /* From layoutConfig.CONTAINER_PADDING_SIDE */
+}
+
+.debug-no-go-right {
+    top: 80px; /* Start below the top no-go zone */
+    right: 0;
+    bottom: 0;
+    width: 50px; /* From layoutConfig.CONTAINER_PADDING_SIDE */
 } 

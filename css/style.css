@@ -163,18 +163,29 @@ body {
 .card-label {
     font-family: var(--nav-font);
     color: #5E7797; /* Use a color from the SVG */
-    /* background-color: #f0f0f0; Match page background */
-    /* padding: 2px 6px; */
-    /* border: 1px solid #ccc; */
     position: absolute;
     z-index: 11; /* Above cards */
-    white-space: nowrap; /* Prevent wrapping */
-    cursor: pointer; /* Already set by JS, but good to have in CSS too */
-    transition: color 0.2s ease-in-out; /* Smooth color transition */
+    white-space: nowrap; /* Prevent wrapping of the container */
+    display: flex; /* ADDED: to layout tags and separators in a row */
+    align-items: center; /* ADDED: to vertically align items if they have different heights (e.g. font variations) */
 }
 
-.card-label:hover {
-    color: #f08282; /* Hover color */
+.card-label-tag {
+    cursor: pointer; /* Individual tags are clickable */
+    transition: color 0.2s ease-in-out; /* Smooth color transition for tags */
+    color: inherit; /* Inherit base color from .card-label */
+    /* Potentially add padding here if needed around individual tags, e.g., padding: 0 3px; */
+}
+
+.card-label-tag:hover {
+    color: #f08282; /* Hover color for individual tags */
+}
+
+.card-label-separator {
+    color: inherit; /* Inherit base color from .card-label */
+    margin: 0 0.1em; /* Add a little space around separators, adjust as needed */
+    cursor: default; /* Separators are not clickable */
+    user-select: none; /* Prevent text selection of separator */
 }
 
 /* Styling for Card Headers (h4 in example, updated) */

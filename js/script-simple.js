@@ -144,8 +144,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (category) {
                 console.log(`[Display-${Date.now()}] Filtering for category: "${category}"`);
                 activeCardContainers = allCardContainers.filter(container => {
-                    const labelElement = container.querySelector('.card-label');
-                    return labelElement && labelElement.textContent.trim() === category;
+                    const labelTags = container.querySelectorAll('.card-label-tag'); // Get all individual tags
+                    for (let tagElement of labelTags) {
+                        if (tagElement.textContent.trim() === category) {
+                            return true; // Card matches if any of its tags match the category
+                        }
+                    }
+                    return false; // No matching tag found for this card
                 });
                 console.log(`[Display-${Date.now()}] Found ${activeCardContainers.length} cards matching category: "${category}".`);
             } else {
@@ -217,18 +222,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function attachLabelClickListeners(cardContainers) {
         cardContainers.forEach(container => {
-            const labelElement = container.querySelector('.card-label');
-            if (labelElement) {
-                // Remove old listener to prevent duplicates if re-attaching
-                labelElement.removeEventListener('click', handleLabelClick);
-                labelElement.addEventListener('click', handleLabelClick);
-                labelElement.style.cursor = 'pointer'; // Add visual cue
-            }
+            const labelTags = container.querySelectorAll('.card-label-tag'); // Get all individual tags
+            labelTags.forEach(tagElement => {
+                // Remove old listener to prevent duplicates if re-attaching (important if this function is called multiple times)
+                // Create a unique property on the element to store its handler if needed, or manage listeners more robustly.
+                // For now, assuming it's okay or that handleLabelClick is idempotent for setup.
+                tagElement.removeEventListener('click', handleLabelClick); // Attempt to remove first
+                tagElement.addEventListener('click', handleLabelClick);
+                tagElement.style.cursor = 'pointer'; // Ensure visual cue is on the tag itself
+            });
+
+            // If there's no individual tags, perhaps a fallback or error for malformed labels?
+            // For now, assuming all labels will follow the new structure.
+            // Original logic for the whole .card-label (if it existed for clicks) is removed.
         });
     }
 
     function handleLabelClick(event) {
-        const categoryName = event.target.textContent.trim();
+        const categoryName = event.target.textContent.trim(); // This should still work correctly
         console.log(`[LabelClick] Label clicked: "${categoryName}"`);
         window.location.hash = 'category=' + encodeURIComponent(categoryName);
         // The hashchange event will trigger loadAndLayoutCards -> displayCardsForCategory
@@ -427,36 +438,41 @@ document.addEventListener('DOMContentLoaded', () => {
     function placeLabels(placedOrFixedCards) {
         console.log(`Phase 2: Processing ${placedOrFixedCards.length} cards for labels.`);
         placedOrFixedCards.forEach(card => {
-            const label = card.labelElement;
-            if (!label || !card.pos || card.pos.x === null || card.pos.y === null) return;
-            Object.assign(label.style, {
+            const labelContainer = card.labelElement; // This is still the div.card-label
+            if (!labelContainer || !card.pos || card.pos.x === null || card.pos.y === null) return;
+            
+            // Ensure labelContainer is displayed to measure it correctly
+            // It should already be display:flex from CSS, but visibility might be hidden by js-loading.
+            // However, placeLabels is called after cards are made visible in layoutCardsInGrid.
+            // Object.assign(labelContainer.style, {.... display: 'block'}) // display:flex is now in CSS
+            Object.assign(labelContainer.style, {
                 position: 'absolute',
                 zIndex: '100',
-                // backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                padding: '2px 5px',
+                // backgroundColor: 'rgba(255, 255, 255, 0.9)', // Kept from old CSS, can be removed if not desired
+                padding: '2px 5px', // Padding on the container might affect overall perceived position
                 borderRadius: '3px',
-                fontSize: '15px',
-                fontWeight: '100',
-                // border: '1px solid #ccc',
-                display: 'block'
+                // fontSize: '15px', // Handled by .card-label font-family and inherited by tags
+                // fontWeight: '100', // Handled by .card-label font-family and inherited by tags
+                // border: '1px solid #ccc', // Kept from old CSS, can be removed if not desired
+                // display: 'block' // Already display: flex in CSS
             });
-            const labelHeight = label.offsetHeight;
             
-            if (labelHeight === 0 && label.textContent.trim() !== '') {
-                console.warn(`[Labels] offsetHeight is 0 for visible label of card ${card.id}. Text: "${label.textContent}". Check CSS.`);
+            // The labelHeight of the container div should now be correct.
+            const labelHeight = labelContainer.offsetHeight; 
+            
+            if (labelHeight === 0 && labelContainer.textContent.trim() !== '') {
+                console.warn(`[Labels] offsetHeight is 0 for visible label container of card ${card.id}. Text: "${labelContainer.textContent}". Check CSS.`);
             }
 
-            // Position the label RELATIVE TO ITS PARENT (.card-container)
-            const labelWidth = label.offsetWidth; // Get label width for right-alignment
+            // Position the label CONTAINER (.card-label div) RELATIVE TO ITS PARENT (.card-container)
+            const labelWidth = labelContainer.offsetWidth; // Get label container width for right-alignment
             
-            // card.width is FIXED_CARD_WIDTH (e.g., 290px from your last CSS change)
-            // If card.width isn't directly on the card object from the grid logic, use FIXED_CARD_WIDTH
-            const parentCardWidth = card.width || FIXED_CARD_WIDTH; // Ensure we have the card's actual width
+            const parentCardWidth = card.width || FIXED_CARD_WIDTH; 
 
-            label.style.left = `${parentCardWidth - labelWidth}px`; // Position label's left edge so its right edge aligns with parent's right edge
-            label.style.top = `-${labelHeight}px`; // Position label's top edge so its bottom aligns with parent's top edge
+            labelContainer.style.left = `${parentCardWidth - labelWidth}px`; 
+            labelContainer.style.top = `-${labelHeight}px`; 
             
-            label.style.visibility = 'visible';
+            labelContainer.style.visibility = 'visible';
         });
     }
 });

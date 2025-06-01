@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raj Saha | Portfolio</title>
+    <!-- Import Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <!-- Link to Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header/Logo Area -->
+    <header>
+        <!-- Text Logo -->
+        <div class="text-logo logo-svg"><span class="logo-name-raj">raj</span><br>SAHA</div>
+        <!-- Navigation Links -->
+        <nav class="header-nav">
+            <ul>
+                <li><a href="index.html">portfolio</a></li>
+                <li><span class="nav-separator">/</span></li>
+                <!-- <li><a href="process.html">how i build stories</a></li>
+                <li><span class="nav-separator">/</span></li> -->
+                <li><a href="#"  class="current-page-link">about</a></li>
+            </ul>
+        </nav>
+        <!-- "Who We Are" card will go here -->
+
+    </header>
+
+    <!-- SVG Layer for drawing connection lines -->
+    <svg id="connecting-lines-svg" width="100%" height="100%" style="position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none;"></svg>
+
+    <!-- Main content area for dynamic story cards -->
+    <main>
+        <div class="process-content-container about-section">
+            <div class="about-profile process-section">
+                <h3 class="section-title">About Me</h3>
+                <div class="about-text">
+                    <p>I'm a computational scientist and visual storyteller with a background in physics, mathematical modeling / machine
+                        learning, and computer vision.
+                        I use data-driven and visual approaches to portray complex systems, particularly in how their core behaviors emerge from interactions between their components.</p>
+                    
+                </div>
+            </div>
+
+            <div class="skills-section process-section">
+                <h3 class="section-title">Technical Expertise</h3>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4>Mathematical Modeling</h4>
+                        <ul class="content-list">
+                            <li>Simulation & computational modeling of complex systems</li>
+                            <li>Time-series analysis for environmental data</li>
+                            <li>Predictive modeling (Python, R, MATLAB, Mathematica)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>Computer Vision & AI</h4>
+                        <ul class="content-list">
+                            <li>Image analysis & processing (OpenCV, TensorFlow/Convolutional Neural Networks)</li>
+                            <li>Machine learning for pattern recognition</li>
+                            <li>Geospatial analysis (GDAL, ArcGIS)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>Data Visualization</h4>
+                        <ul class="content-list">
+                            <li>Interactive web visualizations (D3.js, Three.js)</li>
+                            <li>Scientific visualization</li>
+                            <li>GIS & geospatial mapping</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>Software Development</h4>
+                        <ul class="content-list">
+                            <li>Front-end (JavaScript, HTML/CSS, React)</li>
+                            <li>Back-end (Node.js, Python, Flask)</li>
+                            <li>Data processing pipelines (NumPy, Pandas)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="art-design-section process-section">
+                <h3 class="section-title">Art & Design Experience</h3>
+                <div class="art-design-list">
+                    <div class="art-design-item">
+                        <h4>Juried Exhibitions & Visual Arts</h4>
+                        <ul class="art-list">
+                            <li><span class="art-project">"Time and Temperature"</span> – Juried art show at the Creative Portland Art Gallery (2023)</li>
+                            <li><span class="art-project">"All the Great Trees"</span> – Juried art show at the Creative Portland Art Gallery (2019)</li>
+                            <li><span class="art-project">Mural design and painting</span> for WXYC, student radio station at UNC Chapel Hill (2009)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="art-design-item">
+                        <h4>Documentary & Visual Storytelling</h4>
+                        <ul class="art-list">
+                            <li><span class="art-project">"Transitions"</span> – Photo documentary featuring South Asian immigrants to the US, runner-up in the 25-under-25 competition at Duke Center for Documentary Studies (2006)</li>
+                            <li><span class="art-project">Taino Documentary</span> – Video documentary of Taino poets and artists in Puerto Rico (2003)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="art-design-item">
+                        <h4>Web & Print</h4>
+                        <ul class="art-list">
+                            <li><span class="art-project">MCRN.org</span> – Logo and site design for the Mathematics and Climate Research Network (2014)</li>
+                            <li><span class="art-project">UNC GPSF</span> – Site and logo design for the UNC Graduate Student Federation (2008)</li>
+                            <li><span class="art-project">Rotten øish</span> – Founder and lead designer of a satirical graduate student newsletter (2005)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="experience-section process-section">
+                <h3 class="section-title">Relevant Experience</h3>
+                
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <h4>Analytics Research Manager</h4>
+                        <p class="experience-company">The New York Times</p>
+                        <p class="experience-period">Feb 2022 – Present</p>
+                    </div>
+                    <ul class="experience-duties">
+                        <li>Developed machine learning models for predictive and prescriptive user behavior and risk forecasting</li>
+                        <li>Research on implementing personalized "learned" policies of user experience</li>
+                        <li>Mentored intern</li>
+                    </ul>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <h4>Lecturer</h4>
+                        <p class="experience-company">Roux Institute, Northeastern University</p>
+                        <p class="experience-period">2022 – Present</p>
+                    </div>
+                    <ul class="experience-duties">
+                        <li>Teaching data storytelling techniques and methodologies</li>
+                        <li>Developing curriculum for AI and data science courses</li>
+                        <li>Mentoring students on projects bridging technical skills with narrative approaches</li>
+                    </ul>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <h4>Senior Data Scientist</h4>
+                        <p class="experience-company">Running Tide Technologies</p>
+                        <p class="experience-period">2021 – 2022</p>
+                    </div>
+                    <ul class="experience-duties">
+                        <li>Built computer vision algorithms to remotely monitor kelp growth</li>
+                        <li>High resolution modeling of buoy-farm trajectories in the open ocean</li>
+                        <li>Built mathematical and machine learning models of kelp and algae growth</li>
+                    </ul>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <h4>Interdisciplinary Lecturer & Visiting Assistant Professor</h4>
+                        <p class="experience-company">Bates College</p>
+                        <p class="experience-period">2015 – 2021</p>
+                    </div>
+                    <ul class="experience-duties">
+                        <li>Research on computer vision and bioluminescence</li>
+                        <li>Modeling climate change in the Arctic</li>
+                        <li>Development of interactive teaching materials for complex systems</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Area -->
+    <footer>
+        <div class="footer-copyright">
+            &copy; 2025 raj saha
+        </div>
+        <div class="footer-social-icons">
+            <a href="https://www.linkedin.com/in/rajsahaphd/" target="_blank">LinkedIn</a>
+            <span class="social-separator">/</span>
+            <a href="https://github.com/saha-raj" target="_blank">Github</a>
+        </div>
+    </footer>
+
+    <script src="js/script-regular.js"></script>
+    <script data-goatcounter="https://rs-portfolio.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html> 
